@@ -1,0 +1,36 @@
+.lottobox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .lottonum1,.lottonum2,.lottonum3,.lottonum4,.lottonum5{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height:50px;
+    margin: 5px;
+    border :1px solid grey;
+    border-radius: 50%;
+  }
+  .lottonum1{
+    background-color: #f15f5f;
+    color:white;
+  }
+  .lottonum2{
+    background-color: #997000;
+    color:white;
+  }
+  .lottonum3{
+    background-color: #2f9d27;
+    color:white;
+  }
+  .lottonum4{
+    background-color: #ebee23;
+    color:white;
+  }
+  .lottonum5{
+    background-color: #3f12e0;
+    color:white;
+  }

@@ -8,7 +8,7 @@ const Frcst=()=> {
     const dtkey=["frcstOneDt","frcstTwoDt","frcstThreeDt","frcstFourDt"];
     const cnkey=["frcstOneCn","frcstTwoCn","frcstThreeCn","frcstFourCn"];
     
-    const [cnTag,setCnTag]=useState
+    const [cnTag,setCnTag]=useState([])
     let dtcn={}
      dtkey.map((item,idx)=>
     dtcn[data[item]]=data[cnkey[idx]]

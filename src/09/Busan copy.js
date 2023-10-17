@@ -17,9 +17,7 @@ const Busan = () => {
         e.preventDefault ()
         fetch(url)
         .then((resp)=>resp.json())
-        .then((data)=>
-            
-            setItem(data.getFestivalKr.item[0])
+        .then((data)=>setItem(data.getFestivalKr.item[0])
         )
         .catch((err) => console.log(err))
     }
@@ -43,17 +41,19 @@ const Busan = () => {
     useEffect (()=>{
         sel.current.focus();
     }, []);
-    useEffect (()=>{
-        setTags(
-            <GalleryCard
-            key={item.UC_SEQ}
-            imgsrc={item.MAIN_IMG_THUMB}
-            title={item.TITLE}
-            content={item.ITEMCNTNTS}
-            sptag={item.PLACE.split(',')}
-            ></GalleryCard>
-        )
-    },[item])
+    useEffect(()=>{
+        if (item === undefined) return ;
+
+       setTags(
+            <GalleryCard 
+            key = {item.UC_SEQ}
+            imgsrc={item.MAIN_IMG_THUMB} 
+            title={item.TITLE} 
+            content={item.ITEMCNTNTS.length < 100 ? item.ITEMCNTNTS : item.ITEMCNTNTS.substring(0, 100) + '...'}  
+            // content={item.ITEMCNTNTS}  
+            sptag={item.PLACE.indexOf < 0 ?[item.PLACE] :item.PLACE.split(',')}  />
+       );  
+    }, [item]);
   return (
     <div>
       <main className="container">

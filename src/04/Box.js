@@ -17,7 +17,10 @@ const Box=()=>{
         
         dt.current.value=`${y}-${m}-${d}`
         setCdt(y+m+d)
-        let url=`https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=f5eef3421c602c6cb7ea224104795888&targetDt=${y+m+d}`
+        ffetch(y+m+d)
+    },[])
+    const ffetch=((day)=>{
+        let url=`https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=f5eef3421c602c6cb7ea224104795888&targetDt=${day}`
         fetch(url)
     .then(resp=>resp.json())
     .then(data=>
@@ -25,20 +28,13 @@ const Box=()=>{
         )
     .catch((err) => console.log(err)) 
     console.log(Boxlist)
-    },[])
+    })
     const handleChange=(()=>{
         let temp=dt.current.value
         temp=temp.replaceAll('-','')
         console.log(temp)
         setCdt(temp)
-        let url=`https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=f5eef3421c602c6cb7ea224104795888&targetDt=${temp}`
-        fetch(url)
-    .then(resp=>resp.json())
-    .then(data=>
-        setBoxlist(data.boxOfficeResult.dailyBoxOfficeList)
-        )
-    .catch((err) => console.log(err)) 
-    console.log(Boxlist)
+        ffetch(temp)
     })
     
     return(

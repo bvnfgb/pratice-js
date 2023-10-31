@@ -1,4 +1,5 @@
 
+import Fcst from './12/Fcst';
 import './App.css';
 // import Clock from './01/Clock';
 // import Lotto from './02/Lotto';
@@ -9,7 +10,9 @@ import './App.css';
 // import Taccident from './06/Taccident';
 // import MyRef from './07/MyRef';
 // import Gallery from './08/Gallery';
-import Busan from './09/Busan copy';
+// import Busan from './09/Busan copy';
+// import RoutMain from './10/RoutMain';
+// import Fcst from './11/Fcst';
 function App() {
   return (
       // <></>
@@ -22,7 +25,10 @@ function App() {
     // <Taccident/>
     // <MyRef/>
     // <Gallery></Gallery>
-    <Busan/>
+    // <Busan/>
+    // <RoutMain/>
+    // <Fcst/>
+    <Fcst/>
   );
 }
 

@@ -1,6 +1,12 @@
+// import Login from './15/Login';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Login from './16/Login';
 
-import Fcst from './12/Fcst';
+import Signup from './16/Signup';
 import './App.css';
+import Comment from './16/Comment';
+import Notice from './16/Notice';
+
 // import Clock from './01/Clock';
 // import Lotto from './02/Lotto';
 // import MyCom from './03/MyCom';
@@ -13,6 +19,11 @@ import './App.css';
 // import Busan from './09/Busan copy';
 // import RoutMain from './10/RoutMain';
 // import Fcst from './11/Fcst';
+// import Fcst from './12/Fcst';
+// import DivMain from './13/DivMain';
+// import DivMain from './14/DivMain';
+
+// import { RecoilRoot } from 'recoil';
 function App() {
   return (
       // <></>
@@ -28,7 +39,20 @@ function App() {
     // <Busan/>
     // <RoutMain/>
     // <Fcst/>
-    <Fcst/>
+    // <Fcst/>
+    // <RecoilRoot>
+    // <DivMain/>
+    // </RecoilRoot>
+    // <Login/>
+    <BrowserRouter>
+    <Routes>
+        <Route index element={<Signup/>}/>
+        <Route path='Login' element={<Login/>}></Route>
+        <Route path='Notice' element={<Notice/>}/>
+        <Route path='Comment/:item' element={<Comment/>}/>
+    </Routes>
+    </BrowserRouter>
+    
   );
 }
 

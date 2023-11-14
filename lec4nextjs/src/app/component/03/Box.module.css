@@ -1,0 +1,17 @@
+tfoot {
+    background-color: brown;
+    color: white;
+}
+
+thead {
+    background-color:darkblue;
+
+}
+
+thead th {
+    color: white;
+}
+
+.tempsp {
+    color: white;
+}

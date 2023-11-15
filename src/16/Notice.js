@@ -1,3 +1,5 @@
+// Notice.js
+import TopBar from './TopBar'
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -6,12 +8,10 @@ const Notice = () => {
   const navigate = useNavigate();
 
   const handleDivClick = (item) => {
-    // Replace '/target-page' with the path of the page you want to navigate to
     navigate(`/Comment/${item}`);
   };
 
   const arr_div = arr1.map((item, index) => {
-    // Generate a random background color using Tailwind CSS classes
     const bgColorClass = `bg-slate-${Math.floor(Math.random() * 9) * 100}`;
     
     return (
@@ -21,7 +21,14 @@ const Notice = () => {
     );
   });
 
-  return <div className="grid grid-cols-5 h-screen">{arr_div}</div>;
+  return (
+    <>
+       <TopBar/>
+      <div className="grid grid-cols-5 h-screen pt-16">
+        {arr_div}
+      </div>
+    </>
+  );
 };
 
 export default Notice;

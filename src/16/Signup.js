@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import Login from "./Login.js";
 import { useNavigate } from 'react-router-dom';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-// import Button from "../components/lib/button";
 
 const Signup = () => {
-  // 초기값 세팅 - 아이디, 닉네임, 비밀번호, 비밀번호확인, 이메일, 전화번호, 생년월일
   const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -14,7 +12,6 @@ const Signup = () => {
   const [phone, setPhone] = useState("");
   const [birth, setBirth] = useState("");
 
-  // 오류메세지 상태 저장
   const [idMessage, setIdMessage] = useState("");
   const [nameMessage, setNameMessage] = useState("");
   const [passwordMessage, setPasswordMessage] = useState("");
@@ -23,7 +20,6 @@ const Signup = () => {
   const [phoneMessage, setPhoneMessage] = useState("");
   const [birthMessage, setBirthMessage] = useState("");
 
-  // 유효성 검사
   const [isId, setIsId] = useState(false);
   const [isName, setIsName] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
@@ -141,21 +137,21 @@ const Signup = () => {
   };
 
   return (
-    <>
-      <h3>Sign Up</h3>
+    <div className="container mx-auto lg:w-1/2 xl:w-1/3 h-screen">
+      <h3 className="text-2xl font-semibold mb-4">Sign Up</h3>
       <div className="form">
         <form onSubmit={onsubmit_1}>
-        <div className="form-el">
-          <label htmlFor="id">Id</label> <br />
-          <input id="id" name="id" value={id} onChange={onChangeId} />
-          <p className="message"> {idMessage} </p>
-        </div>
+          <div className="form-el">
+            <label htmlFor="id">Id</label> <br />
+            <input id="id" name="id" value={id} onChange={onChangeId} />
+            <p className="message"> {idMessage} </p>
+          </div>
 
-        <div className="form-el">
-          <label htmlFor="name">Nick Name</label> <br />
-          <input id="name" name="name" value={name} onChange={onChangeName} />
-          <p className="message">{nameMessage}</p>
-        </div>
+          <div className="form-el">
+            <label htmlFor="name">Nick Name</label> <br />
+            <input id="name" name="name" value={name} onChange={onChangeName} />
+            <p className="message">{nameMessage}</p>
+          </div>
         <div className="form-el">
           <label htmlFor="password">Password</label> <br />
           <input
@@ -190,10 +186,15 @@ const Signup = () => {
        
         <br />
         <br />
-        <button type="submit">Submit</button>
+        <button
+            type="submit"
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue active:bg-blue-800"
+          >
+            Submit
+          </button>
         </form>
       </div>
-    </>
+    </div>
   );
 };
 

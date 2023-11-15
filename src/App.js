@@ -5,8 +5,8 @@ import Login from './16/Login';
 import Signup from './16/Signup';
 import './App.css';
 import Comment from './16/Comment';
-import Notice from './16/Notice';
 
+import Notice from './16/Notice';
 // import Clock from './01/Clock';
 // import Lotto from './02/Lotto';
 // import MyCom from './03/MyCom';
@@ -46,9 +46,9 @@ function App() {
     // <Login/>
     <BrowserRouter>
     <Routes>
-        <Route index element={<Signup/>}/>
+        <Route path='Signup' element={<Signup/>}/>
         <Route path='Login' element={<Login/>}></Route>
-        <Route path='Notice' element={<Notice/>}/>
+          <Route path='Notice' element={<Notice/>}/>  
         <Route path='Comment/:item' element={<Comment/>}/>
     </Routes>
     </BrowserRouter>

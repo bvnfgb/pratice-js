@@ -3,7 +3,7 @@ import React from 'react'
 const Comment_component = ({name,text,key}) => {
     
   return (
-    <div key={key} className='inline-block ml-16 text-left align-top'>
+    <div key={key} className='inline-block text-left align-top border-2 border-red-400 border-spacing-16'>
    <div key={key*(-1)}> 
       {name} 
    </div>

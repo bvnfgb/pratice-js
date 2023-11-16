@@ -27,29 +27,47 @@ const Signup = () => {
   const [isEmail, setIsEmail] = useState(false);
   const [isPhone, setIsPhone] = useState(false);
   const [isBirth, setIsBirth] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  
-  const onChangeId = (e) => {
-    const currentId = e.target.value;
-    setId(currentId);
-    const idRegExp = /^[a-zA-z0-9]{4,12}$/;
+  // 회원가입 정보를 서버로 전송하는 함수
+  const submitForm = async () => {
+    try {
+      const response = await fetch('http://10.125.121.205:8080/api/user/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id:id,
+          name:name,
+          pwd:password,
+          email:email
+        })
+      });
 
-    if (!idRegExp.test(currentId)) {
-      setIdMessage("4-12사이 대소문자 또는 숫자만 입력해 주세요!");
-      setIsId(false);
-    } else {
-      setIdMessage("사용가능한 아이디 입니다.");
-      setIsId(true);
+      // 서버 응답을 확인하고 적절한 조치를 취함
+      if (response.ok) {
+        // 회원가입이 성공적으로 이루어지면, 로그인 페이지로 이동하거나 다른 조치를 취할 수 있음
+        navigate('/Login');
+      } else {
+        // 서버로부터 에러 응답을 받은 경우
+        console.error('회원가입에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('오류 발생:', error);
     }
   };
-  function onsubmit_1(event){
+
+  const onSubmit = (event) => {
     event.preventDefault();
-    
-      // Redirect to the desired location
-      navigate('/Login')
-    
-  }
+
+    // 유효성 검사 로직 추가 (예: 모든 필드가 유효한지 확인)
+
+    // 모든 필드가 유효하다면 서버로 데이터 전송
+    if (isId && isName && isPassword && isPasswordConfirm && isEmail && isPhone && isBirth) {
+      submitForm();
+    }
+  };
   const onChangeName = (e) => {
     const currentName = e.target.value;
     setName(currentName);
@@ -105,7 +123,19 @@ const Signup = () => {
       setIsEmail(true);
     }
   };
+  const onChangeId = (e) => {
+    const currentId = e.target.value;
+    setId(currentId);
+    const idRegExp = /^[a-zA-z0-9]{4,12}$/;
 
+    if (!idRegExp.test(currentId)) {
+      setIdMessage("4-12사이 대소문자 또는 숫자만 입력해 주세요!");
+      setIsId(false);
+    } else {
+      setIdMessage("사용가능한 아이디 입니다.");
+      setIsId(true);
+    }
+  };
   const onChangePhone = (getNumber) => {
     const currentPhone = getNumber;
     setPhone(currentPhone);
@@ -140,7 +170,7 @@ const Signup = () => {
     <div className="container mx-auto lg:w-1/2 xl:w-1/3 h-screen">
       <h3 className="text-2xl font-semibold mb-4">Sign Up</h3>
       <div className="form">
-        <form onSubmit={onsubmit_1}>
+        <form onSubmit={onSubmit}>
           <div className="form-el">
             <label htmlFor="id">Id</label> <br />
             <input id="id" name="id" value={id} onChange={onChangeId} />

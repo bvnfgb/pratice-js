@@ -43,10 +43,13 @@ const Comment = () => {
   return (
     <div className='flex flex-col items-center'>
       <TopBar />
-      <div className='pt-16 max-w-full w-2/3 '> {/* Add padding at the top */}
-        <div className='flex items-center w-full'>
-          <div className='flex flex-col w-full'>
+      <div className='pt-16 max-w-full w-2/3 h-screen'> {/* Add padding at the top */}
+        <div className='flex items-center w-full h-full'>
+          <div className='flex flex-col w-full h-full'>
             {largePicture}
+            
+            
+            {temp}
             <textarea
               name='text'
               placeholder='Add a comment...'
@@ -57,7 +60,6 @@ const Comment = () => {
             <button onClick={handleAddComment} className='bg-blue-500 text-white p-2'>
               Add Comment
             </button>
-            {temp}
           </div>
         </div>
       </div>

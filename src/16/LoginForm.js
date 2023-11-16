@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import ButtonBlue from '../comm/ButtonBlue'
 
-const LoginForm = ({setUser}) => {
+const LoginForm = ({setUser,onLogin}) => {
     const [inUser, setInUser]=useState()
     const [inpw, setInpw]=useState()
     const handleLogin=(e)=>{
@@ -10,6 +10,7 @@ const LoginForm = ({setUser}) => {
         if(inUser=== "abcd@abc.com" &&inpw==="1234"){
             localStorage.setItem("user",inUser)
             setUser(inUser)
+            onLogin(inUser,inpw)
         }
         else{
             alert("입력오류")

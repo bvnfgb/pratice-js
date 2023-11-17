@@ -7,14 +7,14 @@ const LoginForm = ({setUser,onLogin}) => {
     const handleLogin=(e)=>{
         e.preventDefault()
 
-        if(inUser=== "abcd@abc.com" &&inpw==="1234"){
+        // if(inUser=== "abcd@abc.com" &&inpw==="1234"){
             localStorage.setItem("user",inUser)
             setUser(inUser)
             onLogin(inUser,inpw)
-        }
-        else{
-            alert("입력오류")
-        }
+        // }
+        // else{
+        //     alert("입력오류")
+        // }
     }
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
@@ -31,7 +31,7 @@ const LoginForm = ({setUser,onLogin}) => {
               <form className="space-y-4 md:space-y-6" action="#">
                   <div>
                       <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
-                      <input onChange={(e)=>setInUser(e.target.value)} type="email" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required=""/>
+                      <input onChange={(e)=>setInUser(e.target.value)} type="text" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required=""/>
                   </div>
                   <div>
                       <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>

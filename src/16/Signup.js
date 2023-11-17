@@ -31,6 +31,7 @@ const Signup = () => {
 
   // 회원가입 정보를 서버로 전송하는 함수
   const submitForm = async () => {
+    console.log("id",id)
     try {
       const response = await fetch('http://10.125.121.205:8080/api/user/add', {
         method: 'POST',
@@ -38,13 +39,14 @@ const Signup = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          id:id,
-          name:name,
+          id,
+          name,
           pwd:password,
-          email:email
+          email
+          
         })
       });
-
+      
       // 서버 응답을 확인하고 적절한 조치를 취함
       if (response.ok) {
         // 회원가입이 성공적으로 이루어지면, 로그인 페이지로 이동하거나 다른 조치를 취할 수 있음
@@ -64,7 +66,7 @@ const Signup = () => {
     // 유효성 검사 로직 추가 (예: 모든 필드가 유효한지 확인)
 
     // 모든 필드가 유효하다면 서버로 데이터 전송
-    if (isId && isName && isPassword && isPasswordConfirm && isEmail && isPhone && isBirth) {
+    if (isId && isName && isPassword && isPasswordConfirm && isEmail ) {
       submitForm();
     }
   };
@@ -124,10 +126,11 @@ const Signup = () => {
     }
   };
   const onChangeId = (e) => {
+    
     const currentId = e.target.value;
     setId(currentId);
     const idRegExp = /^[a-zA-z0-9]{4,12}$/;
-
+console.log(id)
     if (!idRegExp.test(currentId)) {
       setIdMessage("4-12사이 대소문자 또는 숫자만 입력해 주세요!");
       setIsId(false);

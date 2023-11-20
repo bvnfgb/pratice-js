@@ -10,7 +10,7 @@ const Login = () => {
   useEffect(() => {
     // localStorage.setItem('user', 'user@pusan.ac.kr');
     // localStorage.setItem('pwd', 'test');
-    // setUser(localStorage.getItem('user'));
+    setUser(localStorage.getItem('user'));
   }, []);
 
   const handleLogin = async (username, password) => {
@@ -44,7 +44,7 @@ const Login = () => {
   return (
     <main className='container'>
       {user ? (
-        <LoginForm onLogin={handleLogin} setUser={setUser}/>
+        navigate("/Notice")
       ) : (
         <LoginForm onLogin={handleLogin} setUser={setUser}/>
       )}

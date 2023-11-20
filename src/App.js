@@ -7,6 +7,7 @@ import './App.css';
 import Comment from './16/Comment';
 
 import Notice from './16/Notice';
+import Mypage from './16/Mypage';
 // import Clock from './01/Clock';
 // import Lotto from './02/Lotto';
 // import MyCom from './03/MyCom';
@@ -50,6 +51,7 @@ function App() {
         <Route path='Login' element={<Login/>}></Route>
           <Route path='Notice' element={<Notice/>}/>  
         <Route path='Comment/:item' element={<Comment/>}/>
+        <Route path='Mypage' element={<Mypage></Mypage>}></Route>
     </Routes>
     </BrowserRouter>
     

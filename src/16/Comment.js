@@ -65,11 +65,42 @@ const Comment = () => {
     }));
   };
 
-  const handleAddComment = () => {
+  const handleAddComment = 
+  
+     async () => {console.log(newComment.text)
+      // 예시: 서버로 로그인 정보를 보내고 응답을 처리
+      try {
+        const response = await fetch(`http://10.125.121.205:8080/api/comment/add/${qqww.item}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          
+          body: JSON.stringify({content:newComment.text})
+          ,
+        });
+        console.log(newComment.text)
+        if (response.ok) {
+          
+          
+          // 로그인 성공 시 사용자 정보 업데이트
+          // setUser(data.user);
+          
+          // 추가로 필요한 작업 수행 (예: 토큰 저장, 다른 상태 업데이트 등)
+          
+        } else {
+          // 로그인 실패 시 적절한 처리
+          console.error('코멘트 입력 실패');
+        }
+      } catch (error) {
+        console.error('오류 발생', error);
+      }
     setComments((prevComments) => [...prevComments, newComment]);
+    handleserver2()
     setNewComment({ name: '', text: '' });
+    console.log("comments",comments)
   };
-
+  
   return (
     <div className='flex flex-col items-center'>
       <TopBar />

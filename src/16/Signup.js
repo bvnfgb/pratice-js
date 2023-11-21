@@ -176,13 +176,13 @@ console.log(id)
         <form onSubmit={onSubmit}>
           <div className="form-el">
             <label htmlFor="id">Id</label> <br />
-            <input id="id" name="id" value={id} onChange={onChangeId} />
+            <input id="id" name="id" value={id} onInput={onChangeId} />
             <p className="message"> {idMessage} </p>
           </div>
 
           <div className="form-el">
             <label htmlFor="name">Nick Name</label> <br />
-            <input id="name" name="name" value={name} onChange={onChangeName} />
+            <input id="name" name="name" value={name} onInput={onChangeName} />
             <p className="message">{nameMessage}</p>
           </div>
         <div className="form-el">
@@ -191,7 +191,7 @@ console.log(id)
             id="password"
             name="password"
             value={password}
-            onChange={onChangePassword}
+            onInput={onChangePassword}
           />
           <p className="message">{passwordMessage}</p>
         </div>
@@ -201,7 +201,7 @@ console.log(id)
             id="passwordConfirm"
             name="passwordConfirm"
             value={passwordConfirm}
-            onChange={onChangePasswordConfirm}
+            onInput={onChangePasswordConfirm}
           />
           <p className="message">{passwordConfirmMessage}</p>
         </div>
@@ -211,7 +211,7 @@ console.log(id)
             id="email"
             name="name"
             value={email}
-            onChange={onChangeEmail}
+            onInput={onChangeEmail}
           />
           <p className="message">{emailMessage}</p>
         </div>

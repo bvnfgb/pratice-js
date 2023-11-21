@@ -12,7 +12,7 @@ const Login = () => {
     // localStorage.setItem('pwd', 'test');
     setUser(localStorage.getItem('user'));
   }, []);
-
+  
   const handleLogin = async (username, password) => {
     // 예시: 서버로 로그인 정보를 보내고 응답을 처리
     try {

@@ -4,7 +4,9 @@ import {  useNavigate } from 'react-router-dom';
 
 const Mypage = () => {
         const [inputValue,setInputValue]=useState("")
-   
+        const [inputValue2,setInputValue2]=useState("")
+        const [inputName,setInputName]=useState("")
+        const [inputEmail,setInputEmail]=useState("")
         const navigate = useNavigate();
         const handleGoBack = (event) => {
             event.preventDefault()
@@ -53,7 +55,7 @@ const Mypage = () => {
             <div className='flex flex-col'>
                             <div className='flex flex-row'>
                             <label>현재 비밀번호</label>
-                            <input onChange={(event) => {
+                            <input onInput={(event) => {
                                 setInputValue(event.target.value)}} type='password' />
                             </div>
                         </div>
@@ -69,11 +71,11 @@ const Mypage = () => {
                         </div>
                         <div className='flex flex-row'>
                         <label>새로운 비밀번호</label>
-                        <input type='password' />
+                        <input onInput={(e)=>setInputValue(e.target.value)} type='password' />
                         </div>
                         <div className='flex flex-row'>
                         <label>새로운 비밀번호 확인</label>
-                        <input type='password' />
+                        <input onInput={(e)=>setInputValue2(e.target.value) } type='password' />
                         </div>
                     </div>
                     )
@@ -81,6 +83,70 @@ const Mypage = () => {
       useEffect(()=>{
 
       },[showPasswordForm])
+    const onSubmit=()=>{
+      const passwordRegExp =
+      /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+      if(!passwordRegExp.test(inputValue)){
+        alert("비밀번호 형식준수요구")
+        return
+      }
+
+      if(showPasswordForm&&(inputValue==inputValue2))
+        handleGoGo();
+      else if(!showPasswordForm&&inputValue)
+        handleGoGo();
+      alert("다시 시도 하십시오")
+    }
+    useEffect(()=>{},[])
+    const initServer=
+    async()=>{
+      try {
+        const response=await fetch('http://10.125.121.205:8080/',{
+          method:'POST',
+          headers:{
+            'Content-Type': 'application/json',
+          },
+          body:JSON.stringify({id:localStorage.getItem('user')})
+        })
+        if(response.ok){
+          const data=await response.json()
+          setInputEmail(data.email)
+          setInputName(data.name)
+        }
+      } catch (error) {
+        
+      }
+    }
+    const  handleGoGo=
+    async(e)=>{
+      e.preventDefault()
+      
+      try {
+        const response = await fetch(`http://10.125.121.205:8080/`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id:localStorage.getItem('user'),
+                pwd:inputValue,
+                email:inputEmail,
+                name:inputName
+            }),
+              });
+          
+              if (response.ok) {
+                
+                                
+                                navigate('/Notice')
+                // 성공 시 사용자 정보 업데이트 등의 작업 수행
+              } else {
+                // 실패 시 적절한 처리
+                console.error('코멘트 입력 실패');
+              }
+      } catch (error) {
+        
+      }
+    }
   return (
     <div>
       <TopBar/>
@@ -89,12 +155,12 @@ const Mypage = () => {
         <img className='rounded-full w-52 h-52' src='1.jpg'/></div>
       <div className=' w-1/3 justify-center flex mx-8'>
         <form className='w-full'>
-            <div className='flex flex-row'><label>닉네임</label><input type='text'></input></div>
+            <div className='flex flex-row'><label>닉네임</label><input onInput={(e)=>setInputName(e.target.value)} type='text'></input></div>
             <button onClick={handlechangeps} className='mb-7 w-auto'>{showPasswordForm ? '취소' : '비밀번호변경'}</button>
             {showPasswordForm ?temp():temp1()}
-            <div className='flex flex-row'><label>이메일</label><input type='text'></input></div>
+            <div className='flex flex-row'><label>이메일</label><input onInput={(e)=>setInputEmail(e.target.value)} type='text'></input></div>
             <div className='flex flex-row'>
-                <button>수정</button>
+                <button onClick={onSubmit}>수정</button>
                 <button onClick={handleGoBack}>취소</button>
                 <button onClick={handleback}>탈퇴</button>
             </div>

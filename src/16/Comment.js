@@ -45,7 +45,7 @@ const Comment = () => {
         const data = await response.json();
         // 로그인 성공 시 사용자 정보 업데이트
         
-        console.log(data)
+        console.log("data",data)
         setComments(data)
         
         // 추가로 필요한 작업 수행 (예: 토큰 저장, 다른 상태 업데이트 등)
@@ -54,6 +54,7 @@ const Comment = () => {
         console.error('로그인 실패');
       }
     } catch (error) {
+      
       console.error('오류 발생', error);
     }
   };

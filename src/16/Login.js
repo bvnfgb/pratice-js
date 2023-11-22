@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,6 +16,7 @@ const Login = () => {
   
   const handleLogin = async (username, password) => {
     // 예시: 서버로 로그인 정보를 보내고 응답을 처리
+    setLoading(true);
     try {
       const response = await fetch('http://10.125.121.205:8080/api/user/login', {
         method: 'POST',
@@ -35,18 +37,28 @@ const Login = () => {
       } else {
         // 로그인 실패 시 적절한 처리
         console.error('로그인 실패');
+        localStorage.clear()
+        setUser(null)
+
       }
     } catch (error) {
       console.error('오류 발생', error);
+      localStorage.clear()
+      setUser(null)
+    }
+    finally{
+      setLoading(false);
     }
   };
 
   return (
     <main className='container'>
-      {user ? (
-        navigate("/Notice")
+      {loading ? (
+        <p>Loading...</p>
+      ) : user ? (
+        navigate('/Notice')
       ) : (
-        <LoginForm onLogin={handleLogin} setUser={setUser}/>
+        <LoginForm onLogin={handleLogin} setUser={setUser} />
       )}
     </main>
   );

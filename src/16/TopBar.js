@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import ModalBasic from './ModalBasic';
+
 
 const TopBar = () => {
   const [user, setUser] = useState(null);
@@ -10,12 +12,24 @@ const TopBar = () => {
     // localStorage.setItem('pwd', 'test');
     setUser(localStorage.getItem('user'));
   }, []);
+  
+  const [modalOpen, setModalOpen] = useState(false);
+
+  // 모달창 노출
+  const showModal = () => {
+      setModalOpen(true);
+      console.log("클릭")
+  };
+  
+
+  
   const handlelogout=()=>{
     setUser(null)
     localStorage.clear ()
   }
+ 
   return (
-    <div className="bg-gray-800 text-white p-4 fixed w-full top-0">
+    <div className="bg-gray-800 text-white p-4 fixed w-full top-0 z-10">
       <div className="container mx-auto flex justify-between items-center">
         <Link to="/" className="text-xl font-semibold">Your Logo</Link>
 
@@ -25,7 +39,9 @@ const TopBar = () => {
     <label>{user}님 반갑습니다</label>
     <a onClick={handlelogout}>Logout</a>
     <Link to="/mypage">mypage</Link>
-    <Link to="/note">쪽지</Link>
+    <a onClick={showModal}>쪽지</a>
+    {modalOpen &&<ModalBasic setModalOpen={setModalOpen} />}
+
   </>
 ) : (
   <>

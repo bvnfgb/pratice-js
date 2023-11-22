@@ -8,6 +8,9 @@ const Mypage = () => {
         const [inputName,setInputName]=useState("")
         const [inputEmail,setInputEmail]=useState("")
         const navigate = useNavigate();
+        useEffect(()=>{
+          initServer()
+        },[])
         const handleGoBack = (event) => {
             event.preventDefault()
             navigate(-1);
@@ -83,25 +86,26 @@ const Mypage = () => {
       useEffect(()=>{
 
       },[showPasswordForm])
-    const onSubmit=()=>{
+    const onSubmit=(e)=>{
+      e.preventDefault()
       const passwordRegExp =
       /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
       if(!passwordRegExp.test(inputValue)){
         alert("비밀번호 형식준수요구")
         return
       }
-
+      handleGoGo();
       if(showPasswordForm&&(inputValue==inputValue2))
         handleGoGo();
       else if(!showPasswordForm&&inputValue)
         handleGoGo();
-      alert("다시 시도 하십시오")
+      // alert("다시 시도 하십시오")
     }
-    useEffect(()=>{},[])
+    
     const initServer=
     async()=>{
       try {
-        const response=await fetch('http://10.125.121.205:8080/',{
+        const response=await fetch('http://10.125.121.205:8080/api/user/login',{
           method:'POST',
           headers:{
             'Content-Type': 'application/json',
@@ -109,7 +113,9 @@ const Mypage = () => {
           body:JSON.stringify({id:localStorage.getItem('user')})
         })
         if(response.ok){
+          
           const data=await response.json()
+          console.log("data.email",data.email,"data.name",data.name)
           setInputEmail(data.email)
           setInputName(data.name)
         }
@@ -118,12 +124,12 @@ const Mypage = () => {
       }
     }
     const  handleGoGo=
-    async(e)=>{
-      e.preventDefault()
+    async()=>{
+      
       
       try {
-        const response = await fetch(`http://10.125.121.205:8080/`, {
-                method: 'POST',
+        const response = await fetch(`http://10.125.121.205:8080/api/user/update`, {
+                method: 'PUT',
                 headers: {
                   'Content-Type': 'application/json',
                 },
@@ -141,10 +147,10 @@ const Mypage = () => {
                 // 성공 시 사용자 정보 업데이트 등의 작업 수행
               } else {
                 // 실패 시 적절한 처리
-                console.error('코멘트 입력 실패');
+                console.error('회원정보수정 실패');
               }
       } catch (error) {
-        
+        console.error('1회원정보수정 실패1');
       }
     }
   return (
@@ -155,10 +161,10 @@ const Mypage = () => {
         <img className='rounded-full w-52 h-52' src='1.jpg'/></div>
       <div className=' w-1/3 justify-center flex mx-8'>
         <form className='w-full'>
-            <div className='flex flex-row'><label>닉네임</label><input onInput={(e)=>setInputName(e.target.value)} type='text'></input></div>
+            <div className='flex flex-row'><label>닉네임</label><input onInput={(e)=>setInputName(e.target.value)} type='text' value={inputName}></input></div>
             <button onClick={handlechangeps} className='mb-7 w-auto'>{showPasswordForm ? '취소' : '비밀번호변경'}</button>
             {showPasswordForm ?temp():temp1()}
-            <div className='flex flex-row'><label>이메일</label><input onInput={(e)=>setInputEmail(e.target.value)} type='text'></input></div>
+            <div className='flex flex-row'><label>이메일</label><input onInput={(e)=>setInputEmail(e.target.value)} type='text' value={inputEmail}></input></div>
             <div className='flex flex-row'>
                 <button onClick={onSubmit}>수정</button>
                 <button onClick={handleGoBack}>취소</button>

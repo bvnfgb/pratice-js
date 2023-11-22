@@ -9,6 +9,7 @@ import Comment from './16/Comment';
 import Notice from './16/Notice';
 import Mypage from './16/Mypage';
 import MapKakao from './16/MapKakao';
+import Bigmodal from './16/Bigmodal';
 // import Clock from './01/Clock';
 // import Lotto from './02/Lotto';
 // import MyCom from './03/MyCom';
@@ -54,6 +55,7 @@ function App() {
         <Route path='Comment/:item' element={<Comment/>}/>
         <Route path='Mypage' element={<Mypage></Mypage>}></Route>
         <Route path='MapKakao' element={<MapKakao></MapKakao>}></Route>
+        <Route path='Bigmodal' element={<Bigmodal></Bigmodal>}></Route>
     </Routes>
     </BrowserRouter>
     

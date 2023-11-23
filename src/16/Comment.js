@@ -6,6 +6,7 @@ import Comment_component from './Comment_component';
 import { useLocation, useParams } from 'react-router-dom';
 
 const Comment = () => {
+  const [gemeinfo,setGameinfo]=useState()
   const [newComment, setNewComment] = useState({ name: '', text: '' });
   const [comments, setComments] = useState([
     { name: 'comment1', text: 'AAAAAAAAAAA' },
@@ -29,7 +30,9 @@ const Comment = () => {
       /></div>
     </div>
   );
-   useEffect(()=>{handleserver2()},[])
+   useEffect(()=>{handleserver2()
+  getgameinfo()
+  },[])
   const handleserver2 = async () => {
     // 예시: 서버로 로그인 정보를 보내고 응답을 처리
     try {
@@ -65,6 +68,49 @@ const Comment = () => {
       [name]: value,
     }));
   };
+  
+  const maxLengthToShow = 4; 
+  const party = ['data1111111111111111111111111111111', 'data2', 'data3', 'data4', 'data5', 'data6', 'data7'];
+  const displayedParty = party.slice(0, maxLengthToShow);
+const section = displayedParty.map((item, idx) => (
+  <tr key={idx}>
+    <td>{idx}</td>
+    <td>{item.length > 20 ? item.slice(0, 20)+'...' : item}</td>
+  </tr>
+));
+const isDataTruncated = party.length > maxLengthToShow;
+  
+const getgameinfo=
+async()=>{
+  try {
+    const response=await fetch('http://10.125.121.205:8080/api/game/detail',{
+      method:'get',
+      headers:{
+        'Content-Type': 'application/json',
+      },
+      
+    })
+    if(response.ok){
+      const data= await response.json()
+      console.log(data)
+      setGameinfo(data)
+    }
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+const temp3= gemeinfo.map((obj)=>{
+  if(obj.seq==qqww.item){
+    var keys= Object.keys
+    keys.map((item)=>{
+      return <tr>
+        <td>{item}</td>
+        <td>{obj.item}</td>
+      </tr>
+    })
+  }
+})
 
   const handleAddComment = 
   
@@ -110,7 +156,7 @@ const Comment = () => {
           <div className='flex flex-col w-full h-full'>
             {largePicture}
             
-            
+            <div className='flex-col flex w-2/3'>
             {temp}
             <textarea
               name='text'
@@ -122,6 +168,36 @@ const Comment = () => {
             <button onClick={handleAddComment} className='bg-blue-500 text-white p-2'>
               Add Comment
             </button>
+            </div>
+            <div className='bg-white fixed right-64 h-5/6 top-1/2 transform -translate-y-1/2 w-72 flex flex-col pt-0'>
+  <section className='bg-green-300 h-1/2'>
+    <table>
+      <thead>
+        <tr>
+          <th>
+            게임정보
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {temp3}
+      </tbody>
+    </table>
+  </section>
+  <section className='bg-blue-400 h-1/2'>
+    <table className='border-solid'>
+      <thead>
+        <tr>
+          <th colSpan='2'>파티모집</th>
+        </tr>
+      </thead>
+      <tbody>
+        {section === null ? 'loading' : section}
+      </tbody>
+    </table>
+    {isDataTruncated && <p>...</p>}
+  </section>
+</div>
           </div>
         </div>
       </div>

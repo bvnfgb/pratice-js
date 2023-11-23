@@ -1,16 +1,23 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Bigmodal from "./Bigmodal";
 
 function ModalBasic({ setModalOpen, id, title, content, writer }) {
   const closeModal = () => {
     setModalOpen(false);
   };
-  navigator=useNavigate()
-  function handleclick(){
-    navigator('Bigmodal',{state:{item:nList}})
+  const [bigmodalOpen, setbigModalOpen] = useState(false);
+  const [aContent,setaContent]=useState()
+  const [aSend,setaSend]=useState()
+  function showBigModal(content,send){
+    setaContent(content)
+    setaSend(send)
+    setbigModalOpen(true);
+    console.log("클릭빅")
+    
   }
   const [notes, setNotes] = useState([]);
-
+  
   useEffect(() => {
     note();
   }, []);
@@ -40,12 +47,13 @@ function ModalBasic({ setModalOpen, id, title, content, writer }) {
   const nList = notes.map((item) => (
     <ul className="flex " key={item.seq}>
       
-      <li className="list-none flex-1" onClick={handleclick}>{item.content}</li><li className="list-none ">{item.send}</li>
+      <li className="list-none flex-1" onClick={() => showBigModal(item.content, item.send)}>{item.content}</li>
+      <li className="list-none ">{item.send}</li>
     </ul>
   ));
 
   return (
-    <div className="bg-white w-80 h-52 fixed z-50  top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+    <div className="bg-white w-80 h-52 fixed z-30  top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
       <button
         className="absolute w-4 right-0 top-0 text-cyan-300"
         onClick={closeModal}
@@ -54,7 +62,7 @@ function ModalBasic({ setModalOpen, id, title, content, writer }) {
       </button>
       <p>모달창입니다.</p>
       {nList.length > 0 ? nList : null}
-      
+      {bigmodalOpen &&<Bigmodal  setbigModalOpen={setbigModalOpen} content={aContent} send={aSend}/>}
     </div>
   );
 }

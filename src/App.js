@@ -9,7 +9,8 @@ import Comment from './16/Comment';
 import Notice from './16/Notice';
 import Mypage from './16/Mypage';
 import MapKakao from './16/MapKakao';
-import Bigmodal from './16/Bigmodal';
+import TempBoard from './16/TempBoard';
+import TempBoard2 from './16/TempBoard2';
 // import Clock from './01/Clock';
 // import Lotto from './02/Lotto';
 // import MyCom from './03/MyCom';
@@ -55,7 +56,8 @@ function App() {
         <Route path='Comment/:item' element={<Comment/>}/>
         <Route path='Mypage' element={<Mypage></Mypage>}></Route>
         <Route path='MapKakao' element={<MapKakao></MapKakao>}></Route>
-        <Route path='Bigmodal' element={<Bigmodal></Bigmodal>}></Route>
+        <Route path='TempBoard' element={<TempBoard></TempBoard>}></Route>
+        <Route path='TempBoard2' element={<TempBoard2></TempBoard2>}></Route>
     </Routes>
     </BrowserRouter>
     

@@ -3,13 +3,39 @@ import React, { useState } from 'react';
 const TempBoard = ({ onClose }) => {
   const [postContent, setPostContent] = useState('');
   const [imageUrl, setImageUrl] = useState('');
-
+  const handleserver=async()=>{
+    console.log(localStorage.getItem('user'))
+    try {
+      const response=await fetch('http://10.125.121.205:8080/api/party/add',{
+        method:'post',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body:JSON.stringify({
+          memId:localStorage.getItem('user'),
+          content: postContent,
+          title:imageUrl
+        }
+          ),
+      })
+      if(response.ok){
+        window.location.reload()
+        
+      }
+      else{
+        console.error(' 실패2');
+      }
+    } catch (error) {
+      console.error('오류 발생2', error);
+    }
+  }
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Content:', postContent);
     console.log('Image URL:', imageUrl);
     setPostContent('');
     setImageUrl('');
+    handleserver()
   };
 
   return (
@@ -43,11 +69,7 @@ const TempBoard = ({ onClose }) => {
           />
         </div>
 
-        {imageUrl && (
-          <div className="mb-4">
-            <img src={imageUrl} alt="Image Preview" className="w-full h-48 object-cover" />
-          </div>
-        )}
+        
 
         <div className="flex justify-between items-center">
           <button

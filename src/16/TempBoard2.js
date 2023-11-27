@@ -6,13 +6,36 @@ const TempBoard2 = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(5);
   const [showWritingBoard, setShowWritingBoard] = useState(false);
+  
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+      try{
+        
+      const response = await fetch(`http://10.125.121.205:8080/api/party/`,{
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if(response.ok){
       const data = await response.json();
+      console.log(data)
       setPosts(data);
-    };
+      
+    } else {
+      // 로그인 실패 시 적절한 처리
+      console.error(' 실패1');
+    }
+  }
+  
+  catch (error) {
+      
+    console.error('오류 발생1', error);
+  }
+  }
+      
+    
 
     fetchPosts();
   }, []);
@@ -30,8 +53,11 @@ const TempBoard2 = () => {
       <ul className="list-none p-0">
         {currentPosts.map((post) => (
           <li key={post.id} className="mb-4 bg-white p-4 rounded shadow-md">
+            <div className='flex flex-row justify-between'>
             <h3 className="text-lg font-bold mb-2">{post.title}</h3>
-            <p className="text-gray-700">{post.body}</p>
+            <h4> {post.memId}</h4>
+            </div>
+            <p className="text-gray-700">{post.content}</p>
           </li>
         ))}
       </ul>

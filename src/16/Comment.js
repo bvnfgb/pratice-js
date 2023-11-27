@@ -6,7 +6,10 @@ import Comment_component from './Comment_component';
 import { useLocation, useParams } from 'react-router-dom';
 
 const Comment = () => {
-  const [gemeinfo,setGameinfo]=useState()
+  
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 2; // Set the number of items per page here
+  const [gameinfo,setGameinfo]=useState()
   const [newComment, setNewComment] = useState({ name: '', text: '' });
   const [comments, setComments] = useState([
     { name: 'comment1', text: 'AAAAAAAAAAA' },
@@ -14,19 +17,19 @@ const Comment = () => {
   ]);
 
   const temp = comments.map((comment, index) => (
-    <Comment_component key={index} name={comment.name} text={comment.content} />
+    <Comment_component key={index} name={comment.memId} text={comment.content} />
   ));
     const qqww=useParams()
     console.log(qqww.item)
 
   const largePicturePath = `/${qqww.item}.jpg`;
   const largePicture = (
-    <div className='float-left mr-4 flex-grow'>
-      <div className='flex justify-center'>
+    <div className=''>
+      <div className=''>
       <img
         src={largePicturePath}
         alt="Large Picture"
-        className='w-72 max-h-52 object-fill '
+        className=''
       /></div>
     </div>
   );
@@ -48,7 +51,7 @@ const Comment = () => {
         const data = await response.json();
         // 로그인 성공 시 사용자 정보 업데이트
         
-        console.log("data",data)
+        
         setComments(data)
         
         // 추가로 필요한 작업 수행 (예: 토큰 저장, 다른 상태 업데이트 등)
@@ -92,25 +95,37 @@ async()=>{
     })
     if(response.ok){
       const data= await response.json()
-      console.log(data)
+      console.log("data",data)
       setGameinfo(data)
+      console.log('Game Info:', gameinfo);
+      console.log('Item ID:', qqww.item);
     }
 
   } catch (error) {
     console.log(error)
   }
 }
-const temp3= gemeinfo.map((obj)=>{
-  if(obj.seq==qqww.item){
-    var keys= Object.keys
-    keys.map((item)=>{
-      return <tr>
-        <td>{item}</td>
-        <td>{obj.item}</td>
-      </tr>
-    })
-  }
-})
+const [newsData, setNewsData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://10.125.121.205:8080/api/news/');
+        if (response.ok) {
+          const data = await response.json();
+          setNewsData(data);
+        } else {
+          console.error('Failed to fetch news');
+        }
+      } catch (error) {
+        console.error('Error occurred', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
 
   const handleAddComment = 
   
@@ -123,12 +138,15 @@ const temp3= gemeinfo.map((obj)=>{
             'Content-Type': 'application/json',
           },
           
-          body: JSON.stringify({content:newComment.text})
+          body: JSON.stringify({content:newComment.text,
+          memId:localStorage.getItem('user')})
           ,
         });
+
+        console.log('요청 페이로드:', JSON.stringify({ content: newComment.text }));
+        console.log('응답 상태:', response.status);
         console.log(newComment.text)
         if (response.ok) {
-          
           
           // 로그인 성공 시 사용자 정보 업데이트
           // setUser(data.user);
@@ -147,16 +165,19 @@ const temp3= gemeinfo.map((obj)=>{
     setNewComment({ name: '', text: '' });
     console.log("comments",comments)
   };
-  
+  const totalPages = Math.ceil(newsData.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentNewsData = newsData.slice(startIndex, endIndex);
   return (
     <div className='flex flex-col items-center'>
       <TopBar />
       <div className='pt-16 max-w-full w-2/3 h-screen'> {/* Add padding at the top */}
         <div className='flex items-center w-full h-full'>
-          <div className='flex flex-col w-full h-full'>
+          <div className='flex w-full h-full'>
+            <div>
             {largePicture}
-            
-            <div className='flex-col flex w-2/3'>
+            <div className=''>
             {temp}
             <textarea
               name='text'
@@ -165,13 +186,15 @@ const temp3= gemeinfo.map((obj)=>{
               onChange={handleInputChange}
               className='mb-2 p-2'
             />
+            
             <button onClick={handleAddComment} className='bg-blue-500 text-white p-2'>
               Add Comment
             </button>
             </div>
-            <div className='bg-white fixed right-64 h-5/6 top-1/2 transform -translate-y-1/2 w-72 flex flex-col pt-0'>
-  <section className='bg-green-300 h-1/2'>
-    <table>
+            </div>
+            <div className='bg-white fixed right-64 h-auto  transform  w-72 flex flex-col pt-0'>
+  <section className='bg-green-300 h-auto p-0 m-0 '>
+    <table className='m-0'>
       <thead>
         <tr>
           <th>
@@ -180,23 +203,79 @@ const temp3= gemeinfo.map((obj)=>{
         </tr>
       </thead>
       <tbody>
-        {temp3}
+      
+      {gameinfo &&
+            gameinfo.map((game, index) => (
+              game.seq == qqww.item && (
+                <><tr key={index}>
+
+                  <td>{game.name}</td>
+                  </tr>
+                  <tr>
+                  <td>{game.producer}</td></tr>
+                  <tr>
+                  <td>{game.distributor}</td></tr>
+                  <tr>
+                  <td>{game.openDate}</td></tr>
+                  {/* Add more columns as needed */}
+                </>
+              )
+            ))}
       </tbody>
     </table>
   </section>
-  <section className='bg-blue-400 h-1/2'>
-    <table className='border-solid'>
+  <section className='bg-blue-400 h-1/2 p-0 m-0'>
+    <table className='border-solid m-0'>
       <thead>
         <tr>
-          <th colSpan='2'>파티모집</th>
+          <th colSpan='2'><div className='flex justify-between w-full items-center'><div className=''>파티모집</div><div className='text-xs '><button className='border-none'>더보기</button></div></div></th>
+          
         </tr>
       </thead>
       <tbody>
         {section === null ? 'loading' : section}
       </tbody>
     </table>
-    {isDataTruncated && <p>...</p>}
+    {isDataTruncated}
   </section>
+  <section>
+      <table className='m-0 p-0'>
+        <thead>
+          
+            <tr>
+            
+            <th colSpan='2'>
+              <div className='flex w-full justify-between items-center'>
+              뉴스
+              <div className='flex flex-'>
+        <button onClick={() => setCurrentPage(prevPage => Math.max(prevPage - 1, 1))}>
+        {'<'}
+        </button>
+        
+        <button onClick={() => setCurrentPage(prevPage => Math.min(prevPage + 1, totalPages))}>
+          {'>'}
+        </button>
+      </div></div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {currentNewsData.map((item, index) => (
+            <tr key={index} >
+              <td className='m-0 p-0'>
+                <div className='m-0 pr-2'><img src={item.imgUrl} alt={item.title} referrerPolicy="no-referrer" /></div>
+              </td>
+              <td className='m-0 p-0'>
+                
+                <div className='font-bold'><a href={item.hyperLink}>{item.title}</a></div>
+                <div>{item.summary.slice(0, 20)+"..."}</div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      
+    </section>
 </div>
           </div>
         </div>

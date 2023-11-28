@@ -15,22 +15,26 @@ const Comment = () => {
     { name: 'comment1', text: 'AAAAAAAAAAA' },
     
   ]);
-
-  const temp = comments.map((comment, index) => (
-    <Comment_component key={index} name={comment.memId} text={comment.content} />
-  ));
+  // const handleSetComment = (text) => {
+  //   setComments(text)
+  // } 
+  const temp = comments.map((comment) => {
+    console.log(comment.seq);
+    return <Comment_component seq={comment.seq} name={comment.memId} text={comment.content}  />;
+  });
     const qqww=useParams()
     console.log(qqww.item)
 
   const largePicturePath = `/${qqww.item}.jpg`;
   const largePicture = (
-    <div className=''>
-      <div className=''>
+    
+      <div className=' col-span-2 gap-0  text text-center grid-rows-1 '>
+        
       <img
         src={largePicturePath}
         alt="Large Picture"
-        className=''
-      /></div>
+        className=' inline-flex'
+      />
     </div>
   );
    useEffect(()=>{handleserver2()
@@ -43,7 +47,7 @@ const Comment = () => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-        },
+        }
       });
 
       if (response.ok) {
@@ -51,7 +55,7 @@ const Comment = () => {
         const data = await response.json();
         // 로그인 성공 시 사용자 정보 업데이트
         
-        
+        console.log("comment",data)
         setComments(data)
         
         // 추가로 필요한 작업 수행 (예: 토큰 저장, 다른 상태 업데이트 등)
@@ -170,14 +174,14 @@ const [newsData, setNewsData] = useState([]);
   const endIndex = startIndex + itemsPerPage;
   const currentNewsData = newsData.slice(startIndex, endIndex);
   return (
-    <div className='flex flex-col items-center'>
+    <div className='flex flex-col items-center overflow-hidden'>
       <TopBar />
       <div className='pt-16 max-w-full w-2/3 h-screen'> {/* Add padding at the top */}
-        <div className='flex items-center w-full h-full'>
-          <div className='flex w-full h-full'>
-            <div>
+        <div className='grid grid-cols-4 gap-0 items-center w-full h-full'>
+         
+            <div className='col-span-3  max-h-full h-full pt-0 grid gap-0 grid-cols-2 grid-rows-6'>
             {largePicture}
-            <div className=''>
+            <div className=' col-span-2 h-full max-h-full row-span-6 m-0 p-0'>
             {temp}
             <textarea
               name='text'
@@ -192,7 +196,8 @@ const [newsData, setNewsData] = useState([]);
             </button>
             </div>
             </div>
-            <div className='bg-white fixed right-64 h-auto  transform  w-72 flex flex-col pt-0'>
+        <div className='grid grid-rows-2 gap-0'>
+            <div className='     '>
   <section className='bg-green-300 h-auto p-0 m-0 '>
     <table className='m-0'>
       <thead>
@@ -224,7 +229,7 @@ const [newsData, setNewsData] = useState([]);
       </tbody>
     </table>
   </section>
-  <section className='bg-blue-400 h-1/2 p-0 m-0'>
+  <section className='bg-blue-400 h-auto p-0 m-0'>
     <table className='border-solid m-0'>
       <thead>
         <tr>
@@ -276,9 +281,9 @@ const [newsData, setNewsData] = useState([]);
       </table>
       
     </section>
-</div>
+</div></div>
           </div>
-        </div>
+        
       </div>
     </div>
   );

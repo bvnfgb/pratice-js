@@ -1,41 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import TempBoard from './TempBoard';
 
+
+
 const TempBoard2 = () => {
+  const [current_state1,setCurrent_state1]=useState(1)
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(5);
   const [showWritingBoard, setShowWritingBoard] = useState(false);
-  
+  const [selectedPost, setSelectedPost] = useState(null);
 
   useEffect(() => {
     const fetchPosts = async () => {
-      try{
-        
-      const response = await fetch(`http://10.125.121.205:8080/api/party/`,{
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    if(response.ok){
-      const data = await response.json();
-      console.log(data)
-      setPosts(data);
-      
-    } else {
-      // 로그인 실패 시 적절한 처리
-      console.error(' 실패1');
-    }
-  }
-  
-  catch (error) {
-      
-    console.error('오류 발생1', error);
-  }
-  }
-      
-    
+      try {
+        const response = await fetch('http://10.125.121.205:8080/api/party/');
+        if (response.ok) {
+          const data = await response.json();
+          setPosts(data);
+        } else {
+          console.error('Failed to fetch posts');
+        }
+      } catch (error) {
+        console.error('Error while fetching posts', error);
+      }
+    };
 
     fetchPosts();
   }, []);
@@ -44,6 +33,12 @@ const TempBoard2 = () => {
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
 
+  const handlePostClick = (post) => {
+    setSelectedPost(post);
+    setShowWritingBoard(true);
+  };
+  
+
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
@@ -51,14 +46,18 @@ const TempBoard2 = () => {
       <h2 className="text-2xl font-bold mb-4">Post List</h2>
 
       <ul className="list-none p-0">
-        {currentPosts.map((post) => (
-          <li key={post.id} className="mb-4 bg-white p-4 rounded shadow-md">
+      {currentPosts.map((post) => (
+  <li
+    key={post.id}
+    className="mb-4 bg-white p-4 rounded shadow-md cursor-pointer"
+    onClick={() => { setCurrent_state1(2);handlePostClick(post,current_state1)}}
+  >
             <div className='flex flex-row justify-between'>
-            <h3 className="text-lg font-bold mb-2">{post.title}</h3>
+            <h3 className="text-lg font-bold mb-2">{'['}{post.category}{']'}{post.title}</h3>
             <h4> {post.memId}</h4>
             </div>
             <p className="text-gray-700">{post.content}</p>
-          </li>
+            </li>
         ))}
       </ul>
 
@@ -78,7 +77,7 @@ const TempBoard2 = () => {
 
       <div className="flex justify-center mt-4">
         <button
-          onClick={() => setShowWritingBoard(!showWritingBoard)}
+          onClick={() => {setCurrent_state1(1);setShowWritingBoard(!showWritingBoard) }}
           className="bg-green-500 text-white py-2 px-4 rounded mx-1 hover:bg-green-700 focus:outline-none focus:shadow-outline-green"
         >
           {showWritingBoard ? 'Hide Writing Board' : 'Show Writing Board'}
@@ -87,18 +86,22 @@ const TempBoard2 = () => {
 
       {/* Overlay with Writing Board */}
       {showWritingBoard && (
-  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-    <div className="bg-white p-8 rounded shadow-lg">
-      <button
-        className="absolute top-0 right-0 p-4 text-gray-700 hover:text-gray-900"
-        onClick={() => setShowWritingBoard(false)}
-      >
-        Close
-      </button>
-      <TempBoard onClose={() => setShowWritingBoard(false)} />
-    </div>
-  </div>
-)}
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-8 rounded shadow-lg">
+            <button
+              className="absolute top-0 right-0 p-4 text-gray-700 hover:text-gray-900"
+              onClick={() => {
+                setSelectedPost(null);
+                
+                setShowWritingBoard(false);
+              }}
+            >
+              Close
+            </button>
+            <TempBoard setCurrent_state1={setCurrent_state1} current_state1={current_state1} selectedPost={selectedPost} onClose={() => setShowWritingBoard(false)} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

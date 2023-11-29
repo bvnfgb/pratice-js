@@ -38,7 +38,7 @@ const Mypage = () => {
                 // 성공 시 사용자 정보 업데이트 등의 작업 수행
               } else {
                 // 실패 시 적절한 처리
-                console.error('코멘트 입력 실패');
+                console.error('탈퇴 실패');
               }
             } catch (error) {
               console.error('오류 발생', error);

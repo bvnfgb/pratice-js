@@ -3,21 +3,21 @@
 import React, { useEffect, useState } from 'react';
 import TopBar from './TopBar';
 import Comment_component from './Comment_component';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 const Comment = () => {
-  
+  const navigate=useNavigate()
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 2; // Set the number of items per page here
   const [gameinfo,setGameinfo]=useState()
   const [newComment, setNewComment] = useState({ name: '', text: '' });
-  const [comments, setComments] = useState([
-    { name: 'comment1', text: 'AAAAAAAAAAA' },
-    
-  ]);
+  const [comments, setComments] = useState([]);
   // const handleSetComment = (text) => {
   //   setComments(text)
   // } 
+  const handlePartyM=()=>{
+    navigate('/TempBoard2')
+  }
   const temp = comments.map((comment) => {
     console.log(comment.seq);
     return <Comment_component seq={comment.seq} name={comment.memId} text={comment.content}  />;
@@ -56,12 +56,13 @@ const Comment = () => {
         // 로그인 성공 시 사용자 정보 업데이트
         
         console.log("comment",data)
-        setComments(data)
+        if (data!=null)
+          setComments(data)
         
         // 추가로 필요한 작업 수행 (예: 토큰 저장, 다른 상태 업데이트 등)
       } else {
         // 로그인 실패 시 적절한 처리
-        console.error('로그인 실패');
+        console.error('코멘트 불러오기 실패');
       }
     } catch (error) {
       
@@ -133,9 +134,10 @@ const [newsData, setNewsData] = useState([]);
 
   const handleAddComment = 
   
-     async () => {console.log(newComment.text)
+     async () => {console.log(newComment.text,"add_on_comment")
       // 예시: 서버로 로그인 정보를 보내고 응답을 처리
       try {
+        
         const response = await fetch(`http://10.125.121.205:8080/api/comment/add/${qqww.item}`, {
           method: 'POST',
           headers: {
@@ -143,7 +145,8 @@ const [newsData, setNewsData] = useState([]);
           },
           
           body: JSON.stringify({content:newComment.text,
-          memId:localStorage.getItem('user')})
+          memId:localStorage.getItem('user'),
+        boardId:qqww.item})
           ,
         });
 
@@ -154,7 +157,7 @@ const [newsData, setNewsData] = useState([]);
           
           // 로그인 성공 시 사용자 정보 업데이트
           // setUser(data.user);
-          
+          window.location.reload()
           // 추가로 필요한 작업 수행 (예: 토큰 저장, 다른 상태 업데이트 등)
           
         } else {
@@ -233,7 +236,7 @@ const [newsData, setNewsData] = useState([]);
     <table className='border-solid m-0'>
       <thead>
         <tr>
-          <th colSpan='2'><div className='flex justify-between w-full items-center'><div className=''>파티모집</div><div className='text-xs '><button className='border-none'>더보기</button></div></div></th>
+          <th colSpan='2'><div className='flex justify-between w-full items-center'><div className=''>파티모집</div><div className='text-xs '><button onClick={handlePartyM} className='border-none'>더보기</button></div></div></th>
           
         </tr>
       </thead>

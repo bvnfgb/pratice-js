@@ -20,7 +20,7 @@ const Comment_component = ({ name, text, seq }) => {
         });
   
         if (response.ok) {
-         // window.location.reload()
+         window.location.reload()
           setIsUpdate(false);
          //  setthetext(commentInputRef.current.value);
         } else {

@@ -10,7 +10,10 @@ const TempBoard2 = () => {
   const [postsPerPage] = useState(5);
   const [showWritingBoard, setShowWritingBoard] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
-
+useEffect(()=>{
+  if(current_state1==1)
+    setSelectedPost(null)
+},[current_state1])
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -55,6 +58,7 @@ const TempBoard2 = () => {
             <div className='flex flex-row justify-between'>
             <h3 className="text-lg font-bold mb-2">{'['}{post.category}{']'}{post.title}</h3>
             <h4> {post.memId}</h4>
+            <input type='hidden' value={post.seq}/>
             </div>
             <p className="text-gray-700">{post.content}</p>
             </li>
@@ -98,7 +102,7 @@ const TempBoard2 = () => {
             >
               Close
             </button>
-            <TempBoard setCurrent_state1={setCurrent_state1} current_state1={current_state1} selectedPost={selectedPost} onClose={() => setShowWritingBoard(false)} />
+            <TempBoard setCurrent_state1={setCurrent_state1} current_state1={current_state1} selectedPost={selectedPost}  onClose={() => setShowWritingBoard(false)} />
           </div>
         </div>
       )}

@@ -1,13 +1,27 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const Comment_component = ({ name, text, seq }) => {
+const Comment_component = ({ name, text, seq, setIsNameClicked,isNameClicked }) => {
   const [isUpdate, setIsUpdate] = useState(false);
   const commentInputRef = useRef(null);
   const [thetext, setthetext] = useState(text);
+  var isclicked=false
+ const divclicked=()=>{
+    isclicked=!isclicked
 
+ }
+ 
+  const noteRef = useRef(null);
+  
   const handleUpdateClick = () => {
     setIsUpdate(true);
   };
+  
+
+  const handleNameClick = () => {
+    setIsNameClicked(isNameClicked+1);
+  };
+
+  
   const handledelete=async()=>{
    {
       console.log(seq,"seq")
@@ -54,11 +68,19 @@ const Comment_component = ({ name, text, seq }) => {
       console.error('오류 발생', error);
     }
   };
+  
 
+ 
+
+  
+
+    
+
+    
   useEffect(() => {
     setthetext(text);
   }, [text]);
-
+  
   return (
     <div key={seq} className='flex flex-row justify-between text-left align-top border-2 border-red-400 border-spacing-16'>
       {isUpdate ? (
@@ -81,7 +103,18 @@ const Comment_component = ({ name, text, seq }) => {
         <div className='w-full flex justify-between'>
           <span className='text-black text-base'>{thetext}</span>
           <div key={seq * -1} className='flex' >
-            {name}
+          <div key={`name-${seq}`} id={`name-${seq}`} onClick={() => handleNameClick()}>
+        {name}
+      </div>
+      {isNameClicked==1 && isclicked==true && (
+        <div className='nameDiv' onClick={divclicked} style={{ position: 'absolute', width: '100px', height: '100px', backgroundColor:'red'}}>
+          {/* name에 대한 내용을 보여주는 부분 */}
+          {/* 예: <p>{name}에 대한 내용</p> */}
+        </div>
+      )}
+          
+     
+            
             <button className="edit-button" onClick={handleUpdateClick}>
               수정
             </button>

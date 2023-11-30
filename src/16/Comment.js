@@ -6,6 +6,7 @@ import Comment_component from './Comment_component';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 const Comment = () => {
+  
   const navigate=useNavigate()
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 2; // Set the number of items per page here
@@ -18,14 +19,16 @@ const Comment = () => {
   const handlePartyM=()=>{
     navigate('/TempBoard2')
   }
+  const [isNameClicked, setIsNameClicked] = useState(0);
   const temp = comments.map((comment) => {
     console.log(comment.seq);
-    return <Comment_component seq={comment.seq} name={comment.memId} text={comment.content}  />;
+    return <Comment_component seq={comment.seq} name={comment.memId} text={comment.content} isNameClicked={isNameClicked} setIsNameClicked={setIsNameClicked}/>;
   });
     const qqww=useParams()
     console.log(qqww.item)
 
   const largePicturePath = `/${qqww.item}.jpg`;
+  
   const largePicture = (
     
       <div className=' col-span-2 gap-0  text text-center grid-rows-1 '>

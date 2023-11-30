@@ -9,6 +9,7 @@ function ModalBasic({ setModalOpen, id, title, content, writer }) {
   const [bigmodalOpen, setbigModalOpen] = useState(false);
   const [aContent,setaContent]=useState()
   const [aSend,setaSend]=useState()
+  
   function showBigModal(content,send){
     setaContent(content)
     setaSend(send)
@@ -17,11 +18,37 @@ function ModalBasic({ setModalOpen, id, title, content, writer }) {
     
   }
   const [notes, setNotes] = useState([]);
-  
+  const [srstate,setState]=useState(1)//1:받은 2:보낸
   useEffect(() => {
     note();
   }, []);
-
+  const [send1, setsend1] = useState(
+    <>
+      <a onClick={() => setState(1)} className="text-black">
+        보낸
+      </a>
+      <a onClick={() => setState(-1)} className="text-black">
+        받은
+      </a>
+    </>
+  );
+  
+  
+  useEffect(() => {
+    console.log(srstate, "srstate");
+    setsend1(
+      <>
+        <a  onClick={() => setState(1)} className={srstate === 1 ? "text-black underline m-1" : "text-black m-1"}>
+          보낸
+        </a>
+        
+        <a onClick={() => setState(-1)} className={srstate === -1 ? "text-black underline" : "text-black"}>
+          받은
+        </a>
+      </>
+    );
+  }, [srstate]);
+  
   const note = async () => {
     try {
       const response = await fetch(`http://10.125.121.205:8080/api/note/`, {
@@ -35,7 +62,12 @@ function ModalBasic({ setModalOpen, id, title, content, writer }) {
       if (response.ok) {
         const data = await response.json();
         console.log(data);
-        setNotes(data);
+        var data1 = [
+           { seq: 1, content: "11", recive: "5678" ,send:"1234" },
+          { seq: 2, content: "21", recive: "1234" , send:'5678'},
+      ];
+        
+        setNotes(data1);
       } else {
         console.error('실패');
       }
@@ -45,6 +77,7 @@ function ModalBasic({ setModalOpen, id, title, content, writer }) {
   };
 
   const nList = notes.map((item) => (
+    
     <ul className="flex " key={item.seq}>
       
       <li className="list-none flex-1" onClick={() => showBigModal(item.content, item.send)}>{item.content}</li>
@@ -60,9 +93,12 @@ function ModalBasic({ setModalOpen, id, title, content, writer }) {
       >
         X
       </button>
-      <p>모달창입니다.</p>
+      <br/>
+      
+      {send1}
+      <div className="flex justify-between"><p>내용 </p><p>보낸이</p></div>
       {nList.length > 0 ? nList : null}
-      {bigmodalOpen &&<Bigmodal  setbigModalOpen={setbigModalOpen} content={aContent} send={aSend}/>}
+      {bigmodalOpen &&<Bigmodal srstate={srstate} setState={setState}  setbigModalOpen={setbigModalOpen} content={aContent} send={aSend}/>}
     </div>
   );
 }

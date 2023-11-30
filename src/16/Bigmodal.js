@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Bigmodal({content,send,setbigModalOpen}) {
+export default function Bigmodal({content,send,setbigModalOpen, srstate,setstate}) {
   function closeModal(){
     setbigModalOpen(false)
   }
@@ -17,6 +17,7 @@ export default function Bigmodal({content,send,setbigModalOpen}) {
       
       <li className="list-none flex-1" >{content}</li>
       <li className="list-none ">{send}</li>
+      <button>회신</button><button>삭제</button>
     </ul>
     </div>
   )

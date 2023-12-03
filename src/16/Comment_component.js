@@ -20,7 +20,14 @@ const Comment_component = ({ name, text, seq, setIsNameClicked,isNameClicked }) 
   const handleNameClick = () => {
     setIsNameClicked(isNameClicked+1);
   };
-
+useEffect(()=>{
+  if(isNameClicked>1)
+    if(isclicked){
+      isclicked=!isclicked
+      isNameClicked=0
+    }
+      
+},[isNameClicked])
   
   const handledelete=async()=>{
    {

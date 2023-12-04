@@ -52,7 +52,7 @@ function App() {
     <Routes>
         <Route path='Signup' element={<Signup/>}/>
         <Route path='Login' element={<Login/>}></Route>
-        <Route path='Notice' element={<Notice/>}/>  
+        <Route path='/Notice' element={<Notice/>}/>  
         <Route path='Comment/:item' element={<Comment/>}/>
         <Route path='Mypage' element={<Mypage></Mypage>}></Route>
         <Route path='MapKakao' element={<MapKakao></MapKakao>}></Route>

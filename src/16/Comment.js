@@ -19,16 +19,17 @@ const Comment = () => {
   const handlePartyM=()=>{
     navigate('/TempBoard2')
   }
+  
   const [isNameClicked, setIsNameClicked] = useState(0);
   const temp = comments.map((comment) => {
     console.log(comment.seq);
-    return <Comment_component seq={comment.seq} name={comment.memId} text={comment.content} isNameClicked={isNameClicked} setIsNameClicked={setIsNameClicked}/>;
+    return <Comment_component seq={comment.seq} name={comment.memId} text={comment.content}   isNameClicked={isNameClicked} setIsNameClicked={setIsNameClicked}/>;
   });
     const qqww=useParams()
     console.log(qqww.item)
 
   const largePicturePath = `/${qqww.item}.jpg`;
-  
+  const [displayedParty,setDisplayedparty]=useState()
   const largePicture = (
     
       <div className=' col-span-2 gap-0  text text-center grid-rows-1 '>
@@ -80,15 +81,48 @@ const Comment = () => {
     }));
   };
   
-  const maxLengthToShow = 4; 
-  const party = ['data1111111111111111111111111111111', 'data2', 'data3', 'data4', 'data5', 'data6', 'data7'];
-  const displayedParty = party.slice(0, maxLengthToShow);
-const section = displayedParty.map((item, idx) => (
-  <tr key={idx}>
-    <td>{idx}</td>
-    <td>{item.length > 20 ? item.slice(0, 20)+'...' : item}</td>
-  </tr>
-));
+  const maxLengthToShow = 4; //party = ['data1111111111111111111111111111111', 'data2', 'data3', 'data4', 'data5', 'data6', 'data7'];
+
+  const party=async () => {
+    try {
+      const response = await fetch('http://10.125.121.205:8080/api/party/');
+      if (response.ok) {
+        const data = await response.json();
+        console.log("dataR",data)
+        setDisplayedparty(data)
+        console.log(displayedParty,"dis")
+        setSection( displayedParty.map((item, idx) => (
+          <tr key={idx}>
+            <td>{idx}</td>
+            <td>{item.length > 20 ? item.slice(0, 20) + '...' : item}</td>
+          </tr>
+        )))
+      } else {
+        console.error('Failed to fetch posts');
+      }
+    } catch (error) {
+      console.error('Error while fetching posts', error);
+    }
+  };
+  
+  useEffect(()=>{
+    party()
+  },[])
+  // const displayedParty = party.slice(0, maxLengthToShow);
+  const [section, setSection] = useState(
+    displayedParty
+      ? displayedParty.map((item, idx) => (
+          <tr key={idx}>
+            <td>{idx}</td>
+            <td>{item.length > 20 ? item.slice(0, 20) + '...' : item}</td>
+          </tr>
+        ))
+      : null
+  );
+       
+  
+
+
 const isDataTruncated = party.length > maxLengthToShow;
   
 const getgameinfo=

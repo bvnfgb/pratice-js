@@ -1,15 +1,26 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const Comment_component = ({ name, text, seq, setIsNameClicked,isNameClicked }) => {
+const Comment_component = ({ name, text, seq,  setIsNameClicked,isNameClicked}) => {
   const [isUpdate, setIsUpdate] = useState(false);
   const commentInputRef = useRef(null);
   const [thetext, setthetext] = useState(text);
-  var isclicked=false
+  const [isclicked,setisclick]=useState(false)
+  const [selectedUser, setSelectedUser] = useState(null);
  const divclicked=()=>{
-    isclicked=!isclicked
+    setisclick(!isclicked)
 
  }
- 
+
+ const handleUsernameClick = (seq, e) => {
+  
+  if (e) {
+      setSelectedUser(seq);
+      // setUserDetailPosition({ x: e.clientX, y: e.clientY });
+      console.log(seq,"seq")
+      console.log(selectedUser,"selectedUser")
+    }
+    
+};
   const noteRef = useRef(null);
   
   const handleUpdateClick = () => {
@@ -19,15 +30,13 @@ const Comment_component = ({ name, text, seq, setIsNameClicked,isNameClicked }) 
 
   const handleNameClick = () => {
     setIsNameClicked(isNameClicked+1);
+    setisclick(!isclicked)
+    console.log("isnameclicked",isNameClicked)
+    console.log("isclicked",isclicked)
   };
 useEffect(()=>{
-  if(isNameClicked>1)
-    if(isclicked){
-      isclicked=!isclicked
-      isNameClicked=0
-    }
-      
-},[isNameClicked])
+  console.log(selectedUser,"selecteduser")
+},[selectedUser])
   
   const handledelete=async()=>{
    {
@@ -110,13 +119,14 @@ useEffect(()=>{
         <div className='w-full flex justify-between'>
           <span className='text-black text-base'>{thetext}</span>
           <div key={seq * -1} className='flex' >
-          <div key={`name-${seq}`} id={`name-${seq}`} onClick={() => handleNameClick()}>
+          <div key={`name-${seq}`} id={`name-${seq}`} onClick={(e) => handleUsernameClick(seq,e)}>
         {name}
       </div>
-      {isNameClicked==1 && isclicked==true && (
+      {selectedUser && (
         <div className='nameDiv' onClick={divclicked} style={{ position: 'absolute', width: '100px', height: '100px', backgroundColor:'red'}}>
           {/* name에 대한 내용을 보여주는 부분 */}
           {/* 예: <p>{name}에 대한 내용</p> */}
+
         </div>
       )}
           

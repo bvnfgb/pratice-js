@@ -6,6 +6,7 @@ const Comment_component = ({ name, text, seq,  setIsNameClicked,isNameClicked}) 
   const [thetext, setthetext] = useState(text);
   const [isclicked,setisclick]=useState(false)
   const [selectedUser, setSelectedUser] = useState(null);
+  const uri=process.env.REACT_APP_URI
  const divclicked=()=>{
     setisclick(!isclicked)
 
@@ -42,7 +43,7 @@ useEffect(()=>{
    {
       console.log(seq,"seq")
       try {
-        const response = await fetch(`http://10.125.121.205:8080/api/comment/delete/${seq}`, {
+        const response = await fetch(`${uri}/api/comment/delete/${seq}`, {
           method: 'delete',
           headers: {
             'Content-Type': 'application/json',
@@ -63,7 +64,7 @@ useEffect(()=>{
   }
   const handleserver = async () => {
     try {
-      const response = await fetch(`http://10.125.121.205:8080/api/comment/update/${seq}`, {
+      const response = await fetch(`${uri}/api/comment/update/${seq}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

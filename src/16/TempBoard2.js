@@ -4,6 +4,7 @@ import TempBoard from './TempBoard';
 
 
 const TempBoard2 = () => {
+  const uri=process.env.REACT_APP_URI
   const [current_state1,setCurrent_state1]=useState(1)
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -17,7 +18,7 @@ useEffect(()=>{
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch('http://10.125.121.205:8080/api/party/');
+        const response = await fetch(`${uri}/api/party/`);
         if (response.ok) {
           const data = await response.json();
           setPosts(data);

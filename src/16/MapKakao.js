@@ -4,6 +4,7 @@ import TopBar from './TopBar';
 const { kakao } = window;
 
 const MapKakao = () => {
+    const uri=process.env.REACT_APP_URI
     const loca = useLocation();
     const [localaddr, setLocaladdr] = useState('');
     const [address, setAddress] = useState([]);
@@ -31,7 +32,7 @@ const MapKakao = () => {
     useEffect(() => {
         const handleserver2 = async () => {
             try {
-                const response = await fetch(`http://10.125.121.205:8080/api/map/get`, {
+                const response = await fetch(`${uri}/api/map/get`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',

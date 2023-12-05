@@ -6,13 +6,14 @@ import Comment_component from './Comment_component';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 const Comment = () => {
-  
+  const uri=process.env.REACT_APP_URI
   const navigate=useNavigate()
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 2; // Set the number of items per page here
   const [gameinfo,setGameinfo]=useState()
   const [newComment, setNewComment] = useState({ name: '', text: '' });
   const [comments, setComments] = useState([]);
+  const [displayedParty,setDisplayedparty]=useState(null)
   // const handleSetComment = (text) => {
   //   setComments(text)
   // } 
@@ -29,15 +30,17 @@ const Comment = () => {
     console.log(qqww.item)
 
   const largePicturePath = `/${qqww.item}.jpg`;
-  const [displayedParty,setDisplayedparty]=useState()
+  
   const largePicture = (
     
-      <div className=' col-span-2 gap-0  text text-center grid-rows-1 '>
+      <div className=' col-span-2 gap-0  text text-center grid-rows-1'>
         
       <img
         src={largePicturePath}
         alt="Large Picture"
         className=' inline-flex'
+        
+        
       />
     </div>
   );
@@ -47,7 +50,7 @@ const Comment = () => {
   const handleserver2 = async () => {
     // 예시: 서버로 로그인 정보를 보내고 응답을 처리
     try {
-      const response = await fetch(`http://10.125.121.205:8080/api/comment/${qqww.item}`, {
+      const response = await fetch(`${uri}/api/comment/${qqww.item}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -85,18 +88,14 @@ const Comment = () => {
 
   const party=async () => {
     try {
-      const response = await fetch('http://10.125.121.205:8080/api/party/');
+      const response = await fetch(`${uri}/api/party/`);
       if (response.ok) {
         const data = await response.json();
-        console.log("dataR",data)
-        setDisplayedparty(data)
-        console.log(displayedParty,"dis")
-        setSection( displayedParty.map((item, idx) => (
-          <tr key={idx}>
-            <td>{idx}</td>
-            <td>{item.length > 20 ? item.slice(0, 20) + '...' : item}</td>
-          </tr>
-        )))
+        
+
+        setDisplayedparty(data.length>maxLengthToShow?data.slice(0,maxLengthToShow):data)
+        
+        
       } else {
         console.error('Failed to fetch posts');
       }
@@ -104,7 +103,18 @@ const Comment = () => {
       console.error('Error while fetching posts', error);
     }
   };
+  useEffect(() => {
+    if(displayedParty!==null){
+      
+  setSection(displayedParty.map((item, idx) => (
+    <tr key={idx}>
+      <td>{idx}</td>
+      <td>{item.content.length > 20 ? item.content.slice(0, 20) + '...' : item.content}</td>
+    </tr>
+  )));
+    }
   
+}, [displayedParty]);
   useEffect(()=>{
     party()
   },[])
@@ -128,7 +138,7 @@ const isDataTruncated = party.length > maxLengthToShow;
 const getgameinfo=
 async()=>{
   try {
-    const response=await fetch('http://10.125.121.205:8080/api/game/detail',{
+    const response=await fetch(`${uri}/api/game/detail`,{
       method:'get',
       headers:{
         'Content-Type': 'application/json',
@@ -152,7 +162,7 @@ const [newsData, setNewsData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://10.125.121.205:8080/api/news/');
+        const response = await fetch(`${uri}/api/news/`);
         if (response.ok) {
           const data = await response.json();
           setNewsData(data);
@@ -175,7 +185,7 @@ const [newsData, setNewsData] = useState([]);
       // 예시: 서버로 로그인 정보를 보내고 응답을 처리
       try {
         
-        const response = await fetch(`http://10.125.121.205:8080/api/comment/add/${qqww.item}`, {
+        const response = await fetch(`${uri}/api/comment/add/${qqww.item}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

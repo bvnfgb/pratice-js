@@ -16,8 +16,6 @@ const TopBar = () => {
   }
   const [user, setUser] = useState(null);
   useEffect(() => {
-    // localStorage.setItem('user', 'user@pusan.ac.kr');
-    // localStorage.setItem('pwd', 'test');
     setUser(localStorage.getItem('user'));
   }, []);
   

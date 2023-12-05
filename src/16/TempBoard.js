@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 // ... (other imports and components)
 
 const TempBoard = ({ onClose, selectedPost, current_state1, setCurrent_state1 }) => {
+  const uri=process.env.REACT_APP_URI
   const [postContent, setPostContent] = useState(selectedPost?.content || '');
   const [imageUrl, setImageUrl] = useState(selectedPost?.title || '');
   const [selectedCategory, setSelectedCategory] = useState(selectedPost?.category || '');
@@ -21,7 +22,7 @@ const TempBoard = ({ onClose, selectedPost, current_state1, setCurrent_state1 })
 
   const handleserver = async () => {
     try {
-      const response = await fetch('http://10.125.121.205:8080/api/party/add', {
+      const response = await fetch(`${uri}/api/party/add`, {
         method: 'post',
         headers: {
           'Content-Type': 'application/json',
@@ -47,7 +48,7 @@ const TempBoard = ({ onClose, selectedPost, current_state1, setCurrent_state1 })
   };
   const handleserver2 = async () => {
     try {
-      const response = await fetch(`http://10.125.121.205:8080/api/party/update/${seq}`, {
+      const response = await fetch(`${uri}/api/party/update/${seq}`, {
         method: 'put',
         headers: {
           'Content-Type': 'application/json',
@@ -80,7 +81,7 @@ const TempBoard = ({ onClose, selectedPost, current_state1, setCurrent_state1 })
     // Reset state or perform any other cancel logic
     try {
         
-      const response = await fetch(`http://10.125.121.205:8080/api/party/delete/${seq}`, {
+      const response = await fetch(`${uri}/api/party/delete/${seq}`, {
         method: 'delete',
         headers: {
           'Content-Type': 'application/json',

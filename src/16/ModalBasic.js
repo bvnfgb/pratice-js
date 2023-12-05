@@ -6,6 +6,7 @@ function ModalBasic({ setModalOpen, id, title, content, writer }) {
   const closeModal = () => {
     setModalOpen(false);
   };
+  const uri=process.env.REACT_APP_URI
   const [bigmodalOpen, setbigModalOpen] = useState(false);
   const [aContent,setaContent]=useState()
   const [aSend,setaSend]=useState()
@@ -51,7 +52,7 @@ function ModalBasic({ setModalOpen, id, title, content, writer }) {
   
   const note = async () => {
     try {
-      const response = await fetch(`http://10.125.121.205:8080/api/note/`, {
+      const response = await fetch(`${uri}/api/note/`, {
         method: 'get',
         headers: {
           'Content-Type': 'application/json',

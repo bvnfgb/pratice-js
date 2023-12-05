@@ -8,31 +8,15 @@ import { useNavigate } from 'react-router-dom';
 
 
 const Notice = () => {
-  const handlepost = async () => {
-    // 예시: 서버로 로그인 정보를 보내고 응답을 처리
+  const uri=process.env.REACT_APP_URI
+  const navigate = useNavigate();
+  const [arr1,setArr1]=useState({})
+  console.log("uri",uri)
+  const handleserver2 = 
+  async () => {
+    // 예시: 서버로 get 요청을 보내고rank데이터 수신 대기
     try {
-      const response = await fetch('http://10.125.121.205:8080/api/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
-
-      if (response.ok) {
-        handleserver2()
-        serverok=true
-      } else {
-        // 로그인 실패 시 적절한 처리
-        serverok=false
-      }
-    } catch (error) {
-      console.error('오류 발생', error);
-    }
-  };
-  const handleserver2 = async () => {
-    // 예시: 서버로 로그인 정보를 보내고 응답을 처리
-    try {
-      const response = await fetch('http://10.125.121.205:8080/api/', {
+      const response = await fetch(`${uri}/api/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -42,44 +26,56 @@ const Notice = () => {
       if (response.ok) {
         
         const data = await response.json();
-        // 로그인 성공 시 사용자 정보 업데이트
+        // 
         
         console.log(data)
         data.forEach(item => {
           arr1[item.rank] = item.name;
-        });
+        });//데이터 수신후 랭크데이터와 이름데이터 페어링
         console.log(arr1)
-        // 추가로 필요한 작업 수행 (예: 토큰 저장, 다른 상태 업데이트 등)
-        navigate('/Notice'); // 로그인 성공 후 이동할 페이지
+        // 
+        navigate('/Notice'); // 화면 강제 재랜더링
       } else {
-        // 로그인 실패 시 적절한 처리
-        console.error('로그인 실패');
+        // 데이터 수신 실패 시 적절한 처리
+        console.error('데이터수신 실패(handleserver2 fail)');
       }
     } catch (error) {
       console.error('오류 발생', error);
     }
   };
-  var serverok=false
-  const [arr1,setArr1]=useState({})
+  const handlepost = async () => {
+    // 예시: 서버로 post요청 보내고 응답 대기
+    try {
+      const response = await fetch(`${uri}/api/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      if (response.ok) {//ok응답시 2번째 서버요청 함수 실행
+        handleserver2()
+        
+      } else {
+        // 적절한 응답이 없으면 실패판정
+        console.log('서버 초기화실패')
+      }
+    } catch (error) {
+      console.error('오류 발생', error);
+    }
+  };
   
-  useEffect(()=>{
+  
+  useEffect(()=>{//웹페이지 시작시 서버 초기화 함수 시작
     handlepost()
   },[])
-  const navigate = useNavigate();
+  
 
-  const handleDivClick = (item) => {
+  const handleDivClick = (item) => {//각각의 이미지에 하위 게시판으로 이동하는 클릭이벤트 작성
     navigate(`/Comment/${item}`);
   };
 
-  // const arr_div = arr1.map((item, index) => {
-  //   const bgColorClass = `bg-slate-${Math.floor(Math.random() * 9) * 100}`;
-    
-  //   return (
-  //     <div key={index} className={`p-4 ${bgColorClass}`} onClick={() => handleDivClick(item)}>
-  //       {item}
-  //     </div>
-  //   );
-  // });
+  // 
   const handleMouseEnter = (rank) => {
     const img = document.getElementById(`img-${rank}`);
     if (img) {
@@ -87,7 +83,7 @@ const Notice = () => {
       img.style.opacity=1
     }
   };
-
+//위아래는 각각 마우스가 이미지 위에 있는지 인식하는 함수이다. 이미지 위에 있을시 이미지를 흐리게 처리한다
   const handleMouseLeave = (rank) => {
     const img = document.getElementById(`img-${rank}`);
     if (img) {
@@ -102,8 +98,8 @@ const Notice = () => {
       
       {Object.keys(arr1).length > 0 ? (
        
-        Object.entries(arr1).map(([rank, name]) => (
-          <div onClick={() => handleDivClick(rank)} key={rank} className="flex flex-col items-center relative bg-black "
+        Object.entries(arr1).map(([rank]) => (
+          <div onClick={() => handleDivClick(rank)} key={rank} className="flex flex-col items-center relative bg-black "//작성된 이벤트를 모든 이미지에 달아둔다
           onMouseEnter={() => handleMouseEnter(rank)}
           onMouseLeave={() => handleMouseLeave(rank)}>
           <img id={`img-${rank}`} src={`${rank}.jpg`} alt={`Rank ${rank}`} className=" w-full h-full  opacity-20 absolute" />
@@ -112,7 +108,7 @@ const Notice = () => {
           
         ))
       ) : (
-        <p>Loading...</p>
+        <p>Loading...</p>//로딩 화면
       )}
     </div>
       

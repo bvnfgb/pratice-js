@@ -3,6 +3,7 @@ import TopBar from './TopBar';
 import {  useNavigate } from 'react-router-dom';
 
 const Mypage = () => {
+  const uri=process.env.REACT_APP_URI
         const [inputValue,setInputValue]=useState("")
         const [inputValue2,setInputValue2]=useState("")
         const [inputName,setInputName]=useState("")
@@ -21,7 +22,7 @@ const Mypage = () => {
             e.preventDefault()
             // 예시: 서버로 로그인 정보를 보내고 응답을 처리
             try {
-              const response = await fetch(`http://10.125.121.205:8080/api/user/delete`, {
+              const response = await fetch(`${uri}/api/user/delete`, {
                 method: 'DELETE',
                 headers: {
                   'Content-Type': 'application/json',
@@ -105,7 +106,7 @@ const Mypage = () => {
     const initServer=
     async()=>{
       try {
-        const response=await fetch('http://10.125.121.205:8080/api/user/login',{
+        const response=await fetch(`${uri}/api/user/login`,{
           method:'POST',
           headers:{
             'Content-Type': 'application/json',
@@ -128,7 +129,7 @@ const Mypage = () => {
       
       
       try {
-        const response = await fetch(`http://10.125.121.205:8080/api/user/update`, {
+        const response = await fetch(`${uri}/api/user/update`, {
                 method: 'PUT',
                 headers: {
                   'Content-Type': 'application/json',

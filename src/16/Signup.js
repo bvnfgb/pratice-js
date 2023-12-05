@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 const Signup = () => {
+  const uri=process.env.REACT_APP_URI
   const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -33,7 +34,7 @@ const Signup = () => {
   const submitForm = async () => {
     console.log("id",id)
     try {
-      const response = await fetch('http://10.125.121.205:8080/api/user/add', {
+      const response = await fetch(`${uri}/api/user/add`, {//서버로 회원가입 정보를 보낸다.
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -49,7 +50,7 @@ const Signup = () => {
       
       // 서버 응답을 확인하고 적절한 조치를 취함
       if (response.ok) {
-        // 회원가입이 성공적으로 이루어지면, 로그인 페이지로 이동하거나 다른 조치를 취할 수 있음
+        // 회원가입이 성공적으로 이루어지면, 로그인 페이지로 이동한다
         navigate('/Login');
       } else {
         // 서버로부터 에러 응답을 받은 경우
@@ -67,7 +68,7 @@ const Signup = () => {
 
     // 모든 필드가 유효하다면 서버로 데이터 전송
     if (isId && isName && isPassword && isPasswordConfirm && isEmail ) {
-      submitForm();
+      submitForm();//필드가 유효한지 클라이언트에서 확인하지만 서버에서도 확인을 해야한다.
     }
   };
   const onChangeName = (e) => {
@@ -116,7 +117,7 @@ const Signup = () => {
     setEmail(currentEmail);
     const emailRegExp =
       /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
-
+      //숫자영문_+@+숫자영문+.+영문(3)
     if (!emailRegExp.test(currentEmail)) {
       setEmailMessage("이메일의 형식이 올바르지 않습니다!");
       setIsEmail(false);

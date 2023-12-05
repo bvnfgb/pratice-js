@@ -7,7 +7,7 @@ const Login = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
+  const uri=process.env.REACT_APP_URI
   useEffect(() => {
     // localStorage.setItem('user', 'user@pusan.ac.kr');
     // localStorage.setItem('pwd', 'test');
@@ -18,7 +18,7 @@ const Login = () => {
     // 예시: 서버로 로그인 정보를 보내고 응답을 처리
     setLoading(true);
     try {
-      const response = await fetch('http://10.125.121.205:8080/api/user/login', {
+      const response = await fetch(`${uri}/api/user/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

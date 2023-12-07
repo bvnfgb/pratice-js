@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import TopBar from './TopBar';
 import Comment_component from './Comment_component';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-
+import { jwtDecode } from "jwt-decode";
 const Comment = () => {
   const uri=process.env.REACT_APP_URI
   const navigate=useNavigate()
@@ -24,7 +24,7 @@ const Comment = () => {
   const [isNameClicked, setIsNameClicked] = useState(0);
   const temp = comments.map((comment) => {
     console.log(comment.seq);
-    return <Comment_component seq={comment.seq} name={comment.memId} text={comment.content}   isNameClicked={isNameClicked} setIsNameClicked={setIsNameClicked}/>;
+    return <><Comment_component seq={comment.seq} name={comment.memId} text={comment.content}   isNameClicked={isNameClicked} setIsNameClicked={setIsNameClicked}/><hr className='mb-2'></hr></>;
   });
     const qqww=useParams()
     console.log(qqww.item)
@@ -50,7 +50,7 @@ const Comment = () => {
   const handleserver2 = async () => {
     // 예시: 서버로 로그인 정보를 보내고 응답을 처리
     try {
-      const response = await fetch(`${uri}/api/comment/${qqww.item}`, {
+      const response = await fetch(`${uri}/api/comment/get/${qqww.item}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -83,7 +83,8 @@ const Comment = () => {
       [name]: value,
     }));
   };
-  
+  const category={1:'lol',2:'fifa',3:'valo',4:'lostark'
+,5:'sudden',6:'over',7:'maple',8:'battle',9:'starc',10:'dungeon'}
   const maxLengthToShow = 4; //party = ['data1111111111111111111111111111111', 'data2', 'data3', 'data4', 'data5', 'data6', 'data7'];
 
   const party=async () => {
@@ -91,9 +92,14 @@ const Comment = () => {
       const response = await fetch(`${uri}/api/party/`);
       if (response.ok) {
         const data = await response.json();
-        
+        console.log(data,'data')
 
-        setDisplayedparty(data.length>maxLengthToShow?data.slice(0,maxLengthToShow):data)
+        setDisplayedparty((prevDisplayedParty) => {
+          const filteredData = data.filter((item) => item.category === category[qqww.item]);
+          const truncatedData = filteredData.slice(0, maxLengthToShow);
+          return truncatedData;
+        });
+        
         
         
       } else {
@@ -104,17 +110,32 @@ const Comment = () => {
     }
   };
   useEffect(() => {
-    if(displayedParty!==null){
+    if (displayedParty !== null) {
+      setSection(
+        displayedParty.map((item, idx) => {
+           {
+            return (
+              <tr key={idx}>
+                <td>{idx}</td>
+                <td>{item.content.length > 20 ? item.content.slice(0, 20) + '...' : item.content}</td>
+              </tr>
+            );
+          }
+          return null; // You might want to handle the case where the category doesn't match
+        })
+      );
       
-  setSection(displayedParty.map((item, idx) => (
-    <tr key={idx}>
-      <td>{idx}</td>
-      <td>{item.content.length > 20 ? item.content.slice(0, 20) + '...' : item.content}</td>
-    </tr>
-  )));
+      
+    } else {
+      // Handle the case where displayedParty is null
+      setSection(
+        <tr>
+          <td>정보없음</td>
+        </tr>
+      );
     }
+  }, [displayedParty]);
   
-}, [displayedParty]);
   useEffect(()=>{
     party()
   },[])
@@ -189,10 +210,11 @@ const [newsData, setNewsData] = useState([]);
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization':localStorage.getItem('token')
           },
           
           body: JSON.stringify({content:newComment.text,
-          memId:localStorage.getItem('user'),
+          memId:jwtDecode(localStorage.getItem('token')).username,
         boardId:qqww.item})
           ,
         });
@@ -204,7 +226,7 @@ const [newsData, setNewsData] = useState([]);
           
           // 로그인 성공 시 사용자 정보 업데이트
           // setUser(data.user);
-          window.location.reload()
+          // window.location.reload()
           // 추가로 필요한 작업 수행 (예: 토큰 저장, 다른 상태 업데이트 등)
           
         } else {
@@ -264,15 +286,18 @@ const [newsData, setNewsData] = useState([]);
               game.seq == qqww.item && (
                 <><tr key={index}>
 
-                  <td>{game.name}</td>
+                  <td>이름: {game.name}</td>
                   </tr>
                   <tr>
-                  <td>{game.producer}</td></tr>
+                  <td>제작사: {game.producer}</td></tr>
                   <tr>
-                  <td>{game.distributor}</td></tr>
+                  <td>배급사: {game.distributor}</td></tr>
                   <tr>
-                  <td>{game.openDate}</td></tr>
+                  <td>출시일: {game.openDate}</td></tr>
                   {/* Add more columns as needed */}
+                  <tr>
+                    <td>장르: {game.genre}</td>
+                  </tr>
                 </>
               )
             ))}
@@ -283,7 +308,7 @@ const [newsData, setNewsData] = useState([]);
     <table className='border-solid m-0'>
       <thead>
         <tr>
-          <th colSpan='2'><div className='flex justify-between w-full items-center'><div className=''>파티모집</div><div className='text-xs '><button onClick={handlePartyM} className='border-none'>더보기</button></div></div></th>
+          <th colSpan='2'><div className='flex justify-between w-full items-center'><div className=''>파티모집</div><div className='text-xs '><button onClick={handlePartyM} className='border-none'>MORE</button></div></div></th>
           
         </tr>
       </thead>

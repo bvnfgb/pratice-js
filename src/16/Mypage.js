@@ -26,8 +26,9 @@ const Mypage = () => {
                 method: 'DELETE',
                 headers: {
                   'Content-Type': 'application/json',
+                  'Authorization':localStorage.getItem('token')
                 },
-                body: JSON.stringify({ id:localStorage.getItem('user'),
+                body: JSON.stringify({ id:localStorage.getItem('token'),
                 pwd:inputValue
             }),
               });
@@ -106,17 +107,20 @@ const Mypage = () => {
     const initServer=
     async()=>{
       try {
-        const response=await fetch(`${uri}/api/user/login`,{
-          method:'POST',
+        const response=await fetch(`${uri}/api/user/get`,{
+          method:'get',
           headers:{
             'Content-Type': 'application/json',
+            "Authorization":localStorage.getItem('token'),
+            // 'Access-Control-Allow-Origin': '*'
           },
-          body:JSON.stringify({id:localStorage.getItem('user')})
+          
         })
         if(response.ok){
           
           const data=await response.json()
-          console.log("data.email",data.email,"data.name",data.name)
+          console.log(data,'data')
+          // console.log("data.email",data.email,"data.name",data.name)
           setInputEmail(data.email)
           setInputName(data.name)
         }
@@ -127,14 +131,15 @@ const Mypage = () => {
     const  handleGoGo=
     async()=>{
       
-      
+      console.log(localStorage.getItem('token'))
       try {
         const response = await fetch(`${uri}/api/user/update`, {
                 method: 'PUT',
                 headers: {
                   'Content-Type': 'application/json',
+                  'Authorization':localStorage.getItem('token')
                 },
-                body: JSON.stringify({ id:localStorage.getItem('user'),
+                body: JSON.stringify({ id:localStorage.getItem('token'),
                 pwd:inputValue,
                 email:inputEmail,
                 name:inputName

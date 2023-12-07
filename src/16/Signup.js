@@ -89,8 +89,8 @@ const Signup = () => {
     setPassword(currentPassword);
     const passwordRegExp =
       /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
-    if (!passwordRegExp.test(currentPassword)) {
-      setPasswordMessage(
+    // if (!passwordRegExp.test(currentPassword)) {
+    if(false) { setPasswordMessage(
         "숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!"
       );
       setIsPassword(false);

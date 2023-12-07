@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 // ... (other imports and components)
 
 // ... (other imports and components)
-
+import { jwtDecode } from "jwt-decode";
 const TempBoard = ({ onClose, selectedPost, current_state1, setCurrent_state1 }) => {
   const uri=process.env.REACT_APP_URI
   const [postContent, setPostContent] = useState(selectedPost?.content || '');
@@ -26,9 +26,10 @@ const TempBoard = ({ onClose, selectedPost, current_state1, setCurrent_state1 })
         method: 'post',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization':localStorage.getItem('token')
         },
         body: JSON.stringify({
-          memId: localStorage.getItem('user'),
+          memId: jwtDecode(localStorage.getItem('token')).username,
           content: postContent,
           title: imageUrl,
           category: selected_op.current.value,
@@ -47,14 +48,20 @@ const TempBoard = ({ onClose, selectedPost, current_state1, setCurrent_state1 })
     }
   };
   const handleserver2 = async () => {
+    if(localStorage.getItem('token')==null)
+     {
+      alert('외부인')
+      onClose()
+     } 
     try {
       const response = await fetch(`${uri}/api/party/update/${seq}`, {
         method: 'put',
         headers: {
           'Content-Type': 'application/json',
+            'Authorization':localStorage.getItem('token')
         },
         body: JSON.stringify({
-          memId: localStorage.getItem('user'),
+          memId: jwtDecode(localStorage.getItem('token')).username,
           content: postContent,
           title: imageUrl,
           category: selected_op.current.value,
@@ -64,7 +71,12 @@ const TempBoard = ({ onClose, selectedPost, current_state1, setCurrent_state1 })
         
         window.location.reload();
 
-      } else {
+      }else if(response.status==400){
+        alert('외부인')
+        setCurrent_state1(1)
+        onClose()
+      }
+       else {
         console.error(' 실패3');
       }
     } catch (error) {
@@ -85,6 +97,8 @@ const TempBoard = ({ onClose, selectedPost, current_state1, setCurrent_state1 })
         method: 'delete',
         headers: {
           'Content-Type': 'application/json',
+          
+            'Authorization':localStorage.getItem('token')
         },
         
         body: JSON.stringify({
@@ -103,8 +117,13 @@ const TempBoard = ({ onClose, selectedPost, current_state1, setCurrent_state1 })
         window.location.reload()
         // 추가로 필요한 작업 수행 (예: 토큰 저장, 다른 상태 업데이트 등)
         
-      } else {
+      }else if(response.status==400||403){
+        alert('외부인')
+        onClose()
+      } 
+      else {
         // 로그인 실패 시 적절한 처리
+
         console.error('코멘트 입력 실패');
       }
     } catch (error) {
@@ -115,6 +134,11 @@ const TempBoard = ({ onClose, selectedPost, current_state1, setCurrent_state1 })
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if(localStorage.getItem('token')==null){
+      alert('외부인')
+      onClose()
+      return
+    }
 
     handleserver();
   };
@@ -124,7 +148,7 @@ const TempBoard = ({ onClose, selectedPost, current_state1, setCurrent_state1 })
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md">
         <div className="mb-4">
           <label htmlFor="postContent" className="block text-gray-700 text-sm font-bold mb-2">
-            Post Content
+            내용
           </label>
           {current_state1 === 1 ? (
             <textarea
@@ -154,7 +178,7 @@ const TempBoard = ({ onClose, selectedPost, current_state1, setCurrent_state1 })
 
         <div className="mb-4">
           <label htmlFor="imageUrl" className="block text-gray-700 text-sm font-bold mb-2">
-            Image URL
+            제목
           </label>
           {current_state1 === 1 ? (
             <input
@@ -181,7 +205,7 @@ const TempBoard = ({ onClose, selectedPost, current_state1, setCurrent_state1 })
         </div>
 
         <div className="">
-          <label htmlFor="cat">Category</label>
+          <label htmlFor="cat" className='text-gray-700 text-sm font-bold'>카테고리</label>
           {current_state1 === 1 ? (
             <select
               ref={selected_op}
@@ -249,14 +273,14 @@ const TempBoard = ({ onClose, selectedPost, current_state1, setCurrent_state1 })
                 type="submit"
                 className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue"
               >
-                Submit
+                입력
               </button>
               <button
                 type="button"
                 onClick={onClose}
                 className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 focus:outline-none focus:shadow-outline-red"
               >
-                Close
+                닫기
               </button>
               
             </>
@@ -267,7 +291,7 @@ const TempBoard = ({ onClose, selectedPost, current_state1, setCurrent_state1 })
                 className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:shadow-outline-green"
                 onClick={handleModify}
               >
-                modify
+                수정
               </button>
               
               <button
@@ -275,7 +299,7 @@ const TempBoard = ({ onClose, selectedPost, current_state1, setCurrent_state1 })
                 onClick={onClose}
                 className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 focus:outline-none focus:shadow-outline-red"
               >
-                Close
+                닫기
               </button>
             </>
           ) : current_state1 === 3 ? (
@@ -286,21 +310,21 @@ const TempBoard = ({ onClose, selectedPost, current_state1, setCurrent_state1 })
                 className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:shadow-outline-green"
                 onClick={()=>handleserver2()}
               >
-                Submit
+                확인
               </button>
               <button
                 type="button"
                 onClick={handleDelete}
                 className="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-700 focus:outline-none focus:shadow-outline-yellow"
               >
-                delete
+                삭제
               </button>
               <button
                 type="button"
                 onClick={onClose}
                 className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 focus:outline-none focus:shadow-outline-red"
               >
-                Close
+                닫기
               </button>
             </>
           ) :( <></>)

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import TempBoard from './TempBoard';
+import TopBar from './TopBar';
 
 
 
@@ -8,7 +9,7 @@ const TempBoard2 = () => {
   const [current_state1,setCurrent_state1]=useState(1)
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(5);
+  const [postsPerPage] = useState(4);
   const [showWritingBoard, setShowWritingBoard] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
 useEffect(()=>{
@@ -45,15 +46,16 @@ useEffect(()=>{
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  return (
-    <div className="max-w-2xl mx-auto mt-8">
-      <h2 className="text-2xl font-bold mb-4">Post List</h2>
+  return (<>
+    <TopBar></TopBar>
+    <div className="max-w-2xl mx-auto mt-20">
+      <h2 className="text-2xl font-bold mb-4 ">파티모집</h2>
 
       <ul className="list-none p-0">
       {currentPosts.map((post) => (
   <li
     key={post.id}
-    className="mb-4 bg-white p-4 rounded shadow-md cursor-pointer"
+    className="mb-4 bg-white p-4 rounded shadow-md cursor-pointer list-none"
     onClick={() => { setCurrent_state1(2);handlePostClick(post,current_state1)}}
   >
             <div className='flex flex-row justify-between'>
@@ -85,7 +87,7 @@ useEffect(()=>{
           onClick={() => {setCurrent_state1(1);setShowWritingBoard(!showWritingBoard) }}
           className="bg-green-500 text-white py-2 px-4 rounded mx-1 hover:bg-green-700 focus:outline-none focus:shadow-outline-green"
         >
-          {showWritingBoard ? 'Hide Writing Board' : 'Show Writing Board'}
+          {showWritingBoard ? 'Hide Writing Board' : '글쓰기'}
         </button>
       </div>
 
@@ -108,7 +110,7 @@ useEffect(()=>{
         </div>
       )}
     </div>
-  );
+    </>);
 };
 
 export default TempBoard2;

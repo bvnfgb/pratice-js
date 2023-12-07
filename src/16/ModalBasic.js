@@ -40,11 +40,11 @@ function ModalBasic({ setModalOpen, id, title, content, writer }) {
     setsend1(
       <>
         <a  onClick={() => setState(1)} className={srstate === 1 ? "text-black underline m-1" : "text-black m-1"}>
-          보낸
+          보낸/미구현
         </a>
         
         <a onClick={() => setState(-1)} className={srstate === -1 ? "text-black underline" : "text-black"}>
-          받은
+          받은/미구현
         </a>
       </>
     );
@@ -56,7 +56,7 @@ function ModalBasic({ setModalOpen, id, title, content, writer }) {
         method: 'get',
         headers: {
           'Content-Type': 'application/json',
-          'id': localStorage.getItem('user'),
+          'Authorization': localStorage.getItem('token'),
         },
       });
 

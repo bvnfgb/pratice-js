@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { MdModeEditOutline } from "react-icons/md";
+import { FaDeleteLeft } from "react-icons/fa6";
 
 const Comment_component = ({ name, text, seq,  setIsNameClicked,isNameClicked}) => {
   const [isUpdate, setIsUpdate] = useState(false);
@@ -6,6 +8,7 @@ const Comment_component = ({ name, text, seq,  setIsNameClicked,isNameClicked}) 
   const [thetext, setthetext] = useState(text);
   const [isclicked,setisclick]=useState(false)
   const [selectedUser, setSelectedUser] = useState(null);
+  
   const uri=process.env.REACT_APP_URI
  const divclicked=()=>{
     setisclick(!isclicked)
@@ -47,6 +50,8 @@ useEffect(()=>{
           method: 'delete',
           headers: {
             'Content-Type': 'application/json',
+            
+            'Authorization':localStorage.getItem('token')
           },
         });
   
@@ -54,7 +59,10 @@ useEffect(()=>{
          window.location.reload()
           setIsUpdate(false);
          //  setthetext(commentInputRef.current.value);
-        } else {
+        } else if(response.status==400){
+          alert('외부인')
+        }
+        else {
           console.error('서버 응답 실패');
         }
       } catch (error) {
@@ -62,12 +70,15 @@ useEffect(()=>{
       }
     };
   }
-  const handleserver = async () => {
+  const handleserver = async (e) => {
+    e.preventDefault()
     try {
       const response = await fetch(`${uri}/api/comment/update/${seq}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          
+          'Authorization':localStorage.getItem('token')
         },
         body: JSON.stringify({
           content: commentInputRef.current.value,
@@ -78,7 +89,14 @@ useEffect(()=>{
       if (response.ok) {
         setIsUpdate(false);
         setthetext(commentInputRef.current.value);
-      } else {
+        console.log('내부인')
+
+      } else if(response.status==400){
+        console.log('외부인')
+        setIsUpdate(false);
+          alert('외부인')
+      }
+      else {
         console.error('서버 응답 실패');
       }
     } catch (error) {
@@ -99,7 +117,7 @@ useEffect(()=>{
   }, [text]);
   
   return (
-    <div key={seq} className='flex flex-row justify-between text-left align-top border-2 border-red-400 border-spacing-16'>
+    <div key={seq} className='flex flex-row justify-between text-left align-top   border-spacing-16 mb-2'>
       {isUpdate ? (
         <div className="flex justify-between w-full">
           <input
@@ -120,7 +138,7 @@ useEffect(()=>{
         <div className='w-full flex justify-between'>
           <span className='text-black text-base'>{thetext}</span>
           <div key={seq * -1} className='flex' >
-          <div key={`name-${seq}`} id={`name-${seq}`} onClick={(e) => handleUsernameClick(seq,e)}>
+          <div className='mr-2' key={`name-${seq}`} id={`name-${seq}`} onClick={(e) => handleUsernameClick(seq,e)}>
         {name}
       </div>
       {selectedUser && (
@@ -133,10 +151,10 @@ useEffect(()=>{
           
      
             
-            <button className="edit-button" onClick={handleUpdateClick}>
-              수정
+            <button className="edit-button border-none mr-1" onClick={handleUpdateClick}>
+            <MdModeEditOutline />
             </button>
-            <button className="delete-button" onClick={handledelete}>삭제</button>
+            <button className="delete-button border-none" onClick={handledelete}><FaDeleteLeft/></button>
           </div>
         </div>
       )}

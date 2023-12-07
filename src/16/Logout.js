@@ -2,7 +2,7 @@ import React from 'react'
 import ButtonBlue from '../comm/ButtonBlue'
 const Logout = ({user ,serUser}) => {
     const handleLogout=()=>{
-        localStorage.removeItem('user')
+        localStorage.removeItem('token')
         serUser(null)
     }
   return (

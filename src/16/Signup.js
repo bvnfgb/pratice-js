@@ -171,44 +171,46 @@ console.log(id)
   };
 
   return (
-    <div className="container mx-auto lg:w-1/2 xl:w-1/3 h-screen">
-      <h3 className="text-2xl font-semibold mb-4">Sign Up</h3>
+    <div className="container mx-auto lg:w-1/2 xl:w-1/3 h-screen p-0 m-0">
+      <h3 className="text-2xl font-semibold pt-5 mb-4">회원가입</h3>
       <div className="form">
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit} className="h-10">
           <div className="form-el">
-            <label htmlFor="id">Id</label> <br />
-            <input id="id" name="id" value={id} onInput={onChangeId} />
+            <label htmlFor="id">아이디</label> 
+            <input className="m-0" id="id" name="id" value={id} onInput={onChangeId} style={{margin:0}} />
             <p className="message"> {idMessage} </p>
           </div>
 
           <div className="form-el">
-            <label htmlFor="name">Nick Name</label> <br />
-            <input id="name" name="name" value={name} onInput={onChangeName} />
+            <label htmlFor="name">닉네임</label> 
+            <input id="name" name="name" value={name} onInput={onChangeName} style={{margin:0}} />
             <p className="message">{nameMessage}</p>
           </div>
         <div className="form-el">
-          <label htmlFor="password">Password</label> <br />
+          <label htmlFor="password">비밀번호</label> 
           <input
-            id="password"
+            id="password" style={{margin:0}}
             name="password"
             value={password}
             onInput={onChangePassword}
+            type="password"
           />
           <p className="message">{passwordMessage}</p>
         </div>
         <div className="form-el">
-          <label htmlFor="passwordConfirm">Password Confirm</label> <br />
-          <input
+          <label htmlFor="passwordConfirm">비밀번호 확인</label>
+          <input style={{margin:0}}
             id="passwordConfirm"
             name="passwordConfirm"
             value={passwordConfirm}
+            type="password"
             onInput={onChangePasswordConfirm}
           />
           <p className="message">{passwordConfirmMessage}</p>
         </div>
         <div className="form-el">
-          <label htmlFor="email">Email</label> <br />
-          <input
+          <label htmlFor="email">이메일</label>
+          <input style={{margin:0}}
             id="email"
             name="name"
             value={email}
@@ -218,13 +220,13 @@ console.log(id)
         </div>
         
        
-        <br />
+        
         <br />
         <button
             type="submit"
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue active:bg-blue-800"
           >
-            Submit
+            확인
           </button>
         </form>
       </div>

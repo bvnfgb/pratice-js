@@ -147,6 +147,33 @@ const TempBoard = ({ onClose, selectedPost, current_state1, setCurrent_state1 })
     <div>
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md">
         <div className="mb-4">
+          <label htmlFor="imageUrl" className="block text-gray-700 text-sm font-bold mb-2">
+            제목
+          </label>
+          {current_state1 === 1 ? (
+            <input
+              type="text"
+              id="imageUrl"
+              name="imageUrl"
+              value={imageUrl}
+              onInput={(e) => setImageUrl(e.target.value)}
+              className="w-full border p-2"
+            />
+          ) : current_state1 === 2 ? (
+            <div className="w-full border p-2">{imageUrl}</div>
+          ) : (
+            /* Handle state 3 specific content or display nothing for other states */
+            <input
+              type="text"
+              id="imageUrl"
+              name="imageUrl"
+              value={imageUrl}
+              onInput={(e) => setImageUrl(e.target.value)}
+              className="w-full border p-2"
+            />
+          )}
+        </div>
+        <div className="mb-4">
           <label htmlFor="postContent" className="block text-gray-700 text-sm font-bold mb-2">
             내용
           </label>
@@ -176,33 +203,7 @@ const TempBoard = ({ onClose, selectedPost, current_state1, setCurrent_state1 })
           )}
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="imageUrl" className="block text-gray-700 text-sm font-bold mb-2">
-            제목
-          </label>
-          {current_state1 === 1 ? (
-            <input
-              type="text"
-              id="imageUrl"
-              name="imageUrl"
-              value={imageUrl}
-              onInput={(e) => setImageUrl(e.target.value)}
-              className="w-full border p-2"
-            />
-          ) : current_state1 === 2 ? (
-            <div className="w-full border p-2">{imageUrl}</div>
-          ) : (
-            /* Handle state 3 specific content or display nothing for other states */
-            <input
-              type="text"
-              id="imageUrl"
-              name="imageUrl"
-              value={imageUrl}
-              onInput={(e) => setImageUrl(e.target.value)}
-              className="w-full border p-2"
-            />
-          )}
-        </div>
+        
 
         <div className="">
           <label htmlFor="cat" className='text-gray-700 text-sm font-bold'>카테고리</label>
@@ -216,16 +217,16 @@ const TempBoard = ({ onClose, selectedPost, current_state1, setCurrent_state1 })
               className="w-full border p-2"
             >
               {[
-                'lol',
-                'fifa',
-                'valo',
-                'lostark',
-                'sudden',
-                'over',
-                'maple',
-                'battle',
-                'starc',
-                'dungeon',
+                '롤',
+                'FC온라인',
+                '발로란트',
+                '로아',
+                '서든어택',
+                '오버워치',
+                '메이플',
+                '배그',
+                '스타',
+                '던파',
               ].map((cat, idx) => (
                 <option key={idx} value={cat}>
                   {cat}

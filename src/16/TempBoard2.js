@@ -22,7 +22,13 @@ useEffect(()=>{
         const response = await fetch(`${uri}/api/party/`);
         if (response.ok) {
           const data = await response.json();
-          setPosts(data);
+        //  const data1= data.map((_,idx)=>{
+            
+        //  })
+        
+        console.log(data,'tempdata')
+          setPosts(data.reverse());
+
         } else {
           console.error('Failed to fetch posts');
         }
@@ -48,8 +54,8 @@ useEffect(()=>{
 
   return (<>
     <TopBar></TopBar>
-    <div className="max-w-2xl mx-auto mt-20">
-      <h2 className="text-2xl font-bold mb-4 ">파티모집</h2>
+    <div className="max-w-2xl mx-auto" style={{marginTop:'76.26px'}}>
+      <h2 className="text-2xl font-bold mb-4  pt-2 ">파티모집</h2>
 
       <ul className="list-none p-0">
       {currentPosts.map((post) => (

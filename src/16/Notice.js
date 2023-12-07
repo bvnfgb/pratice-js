@@ -94,12 +94,12 @@ const Notice = () => {
   return (
     <>
        <TopBar/>
-      <div  className="grid grid-cols-5 gap-0 h-screen pt-16">
+      <div  className="grid grid-cols-5 gap-0 h-screen" style={{paddingTop:'3.75rem'}}>
       
       {Object.keys(arr1).length > 0 ? (
        
         Object.entries(arr1).map(([rank]) => (
-          <div onClick={() => handleDivClick(rank)} key={rank} className="flex flex-col items-center relative bg-black "//작성된 이벤트를 모든 이미지에 달아둔다
+          <div id='elementToFadeInAndOut' onClick={() => handleDivClick(rank)} key={rank} className="flex flex-col items-center relative bg-black "//작성된 이벤트를 모든 이미지에 달아둔다
           onMouseEnter={() => handleMouseEnter(rank)}
           onMouseLeave={() => handleMouseLeave(rank)}>
           <img id={`img-${rank}`} src={`${rank}.jpg`} alt={`Rank ${rank}`} className=" w-full h-full  opacity-20 absolute" />

@@ -137,8 +137,8 @@ useEffect(()=>{
       ) : (
         <div className='w-full flex justify-between'>
           <span className='text-black text-base'>{thetext}</span>
-          <div key={seq * -1} className='flex' >
-          <div className='mr-2' key={`name-${seq}`} id={`name-${seq}`} onClick={(e) => handleUsernameClick(seq,e)}>
+          <div key={seq * -1} className='flex' >{/*onClick={(e) => handleUsernameClick(seq,e)}*/}
+          <div className='mr-2' key={`name-${seq}`} id={`name-${seq}`} >
         {name}
       </div>
       {selectedUser && (

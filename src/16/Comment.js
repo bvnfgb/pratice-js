@@ -1,10 +1,12 @@
 // Comment.js
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import TopBar from './TopBar';
 import Comment_component from './Comment_component';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
+import CommentList from './CommentList';
+import TempBoard from './TempBoard';
 const Comment = () => {
   const uri=process.env.REACT_APP_URI
   const navigate=useNavigate()
@@ -14,16 +16,38 @@ const Comment = () => {
   const [newComment, setNewComment] = useState({ name: '', text: '' });
   const [comments, setComments] = useState([]);
   const [displayedParty,setDisplayedparty]=useState(null)
+  const [hide1,sethide1]=useState(true)
+  const [current_state1,setCurrent_state1]=useState(1)
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [showWritingBoard, setShowWritingBoard] = useState(false);
+  const [seq,setseq]=useState(null)
   // const handleSetComment = (text) => {
   //   setComments(text)
   // } 
+  const postseq= useRef()
   const handlePartyM=()=>{
     navigate('/TempBoard2')
   }
-  
+  const hancleshow=()=>{
+    console.log(postseq.current.value,'showitem')
+    console.log(displayedParty,"hancleshow");
+    displayedParty.map((item)=>{
+      
+        console.log(seq,'abc')
+       
+    })
+    
+  }
+  useEffect(()=>{
+    console.log(seq,'fff')
+  },[seq])
+  const handleinfo=()=>{
+    sethide1(!hide1)
+  }
   const [isNameClicked, setIsNameClicked] = useState(0);
   const temp = comments.map((comment) => {
     console.log(comment.seq);
+
     return <><Comment_component seq={comment.seq} name={comment.memId} text={comment.content}   isNameClicked={isNameClicked} setIsNameClicked={setIsNameClicked}/><hr className='mb-2'></hr></>;
   });
     const qqww=useParams()
@@ -33,7 +57,7 @@ const Comment = () => {
   
   const largePicture = (
     
-      <div className=' col-span-2 gap-0  text text-center grid-rows-1'>
+      <div className=' col-span-2 gap-0  text text-center flex w-full'>
         
       <img
         src={largePicturePath}
@@ -42,6 +66,41 @@ const Comment = () => {
         
         
       />
+      <section className='bg-white  p-0 m-0 w-full' >
+    <table className='m-0'>
+      <thead >
+        <tr >
+          <th colSpan='2' className='border-none font-bold p-0 py-3 pl-3 w-full'>
+            게임정보
+          </th>
+          <th><button onClick={handleinfo}></button></th>
+        </tr>
+      </thead>
+      <tbody>
+      
+      {gameinfo && hide1&&
+            gameinfo.map((game, index) => (
+              game.seq == qqww.item && (
+                <><tr key={index}>
+
+                  <td  className='border-none px-2'>이름</td><td> {game.name}</td>
+                  </tr>
+                  <tr>
+                  <td className='border-none px-2'>제작 </td><td>{game.producer}</td></tr>
+                  <tr>
+                  <td className='border-none px-2'>배급 </td><td>{game.distributor.length>8?game.distributor.slice(0,8)+'...':game.distributor}</td></tr>
+                  <tr>
+                  <td className='border-none px-2'>출시 </td><td>{game.openDate}</td></tr>
+                  {/* Add more columns as needed */}
+                  <tr>
+                    <td className='border-none px-2'>장르 </td><td>{game.genre.length>8? game.genre.slice(0,8)+'...':game.genre}</td>
+                  </tr>
+                </>
+              )
+            ))}
+      </tbody>
+    </table>
+  </section>
     </div>
   );
    useEffect(()=>{handleserver2()
@@ -83,8 +142,16 @@ const Comment = () => {
       [name]: value,
     }));
   };
-  const category={1:'lol',2:'fifa',3:'valo',4:'lostark'
-,5:'sudden',6:'over',7:'maple',8:'battle',9:'starc',10:'dungeon'}
+  const category={1:'롤',
+  2:'FC온라인',
+  3:'발로란트',
+  4:'로아',
+  5:'서든어택',
+  6:'오버워치',
+  7:'메이플',
+  8:'배그',
+  9:'스타',
+  10:'던파',}
   const maxLengthToShow = 4; //party = ['data1111111111111111111111111111111', 'data2', 'data3', 'data4', 'data5', 'data6', 'data7'];
 
   const party=async () => {
@@ -93,9 +160,9 @@ const Comment = () => {
       if (response.ok) {
         const data = await response.json();
         console.log(data,'data')
-
+        const data1=data.reverse()
         setDisplayedparty((prevDisplayedParty) => {
-          const filteredData = data.filter((item) => item.category === category[qqww.item]);
+          const filteredData = data1.filter((item) => item.category === category[qqww.item]);
           const truncatedData = filteredData.slice(0, maxLengthToShow);
           return truncatedData;
         });
@@ -111,13 +178,16 @@ const Comment = () => {
   };
   useEffect(() => {
     if (displayedParty !== null) {
+      console.log(displayedParty)
       setSection(
         displayedParty.map((item, idx) => {
            {
+            console.log(item.seq,'item.seq')
             return (
-              <tr key={idx}>
-                <td>{idx}</td>
-                <td>{item.content.length > 20 ? item.content.slice(0, 20) + '...' : item.content}</td>
+              <tr >
+                
+                <td  value={item.seq} ref={postseq} onClick={()=>{hancleshow();setseq(item.seq)}} className='border-none'>{item.title.length > 20 ? item.title.slice(0, 20) + '...' : item.title}</td>
+                <td className='text-right border-none'>{item.memId.length > 20 ? item.memId.slice(0, 20) + '...' : item.memId}</td>
               </tr>
             );
           }
@@ -248,78 +318,34 @@ const [newsData, setNewsData] = useState([]);
   return (
     <div className='flex flex-col items-center overflow-hidden'>
       <TopBar />
-      <div className='pt-16 max-w-full w-2/3 h-screen'> {/* Add padding at the top */}
-        <div className='grid grid-cols-4 gap-0 items-center w-full h-full'>
+      <div className='pt-16 flex justify-center max-w-full w-full h-screen' style={{paddingTop:'76.25px'}}> {/* Add padding at the top */}
+        <div className='flex justify-center max-w-full items-center w-full h-full mt-2'>
          
-            <div className='col-span-3  max-h-full h-full pt-0 grid gap-0 grid-cols-2 grid-rows-6'>
+            <div className='  bg-white max-h-full h-full pt-0 ' style={{flexBasis:'50%'}}>
             {largePicture}
+            
             <div className=' col-span-2 h-full max-h-full row-span-6 m-0 p-0'>
-            {temp}
+              <div className='' style={{height:'45%'}}>
+                <CommentList comments={comments} itemsPerPage={6}></CommentList>
+            {/* {temp}</div> */}</div>
+            <div >
             <textarea
               name='text'
               placeholder='Add a comment...'
               value={newComment.text}
               onChange={handleInputChange}
-              className='mb-2 p-2'
+              className='mb-2 p-2 '
             />
             
-            <button onClick={handleAddComment} className='bg-blue-500 text-white p-2'>
+            <button onClick={handleAddComment} className='bg-blue-500 text-white p-2   '>
               Add Comment
-            </button>
+            </button></div>
             </div>
             </div>
-        <div className='grid grid-rows-2 gap-0'>
-            <div className='     '>
-  <section className='bg-green-300 h-auto p-0 m-0 '>
-    <table className='m-0'>
-      <thead>
-        <tr>
-          <th>
-            게임정보
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-      
-      {gameinfo &&
-            gameinfo.map((game, index) => (
-              game.seq == qqww.item && (
-                <><tr key={index}>
-
-                  <td>이름: {game.name}</td>
-                  </tr>
-                  <tr>
-                  <td>제작사: {game.producer}</td></tr>
-                  <tr>
-                  <td>배급사: {game.distributor}</td></tr>
-                  <tr>
-                  <td>출시일: {game.openDate}</td></tr>
-                  {/* Add more columns as needed */}
-                  <tr>
-                    <td>장르: {game.genre}</td>
-                  </tr>
-                </>
-              )
-            ))}
-      </tbody>
-    </table>
-  </section>
-  <section className='bg-blue-400 h-auto p-0 m-0'>
-    <table className='border-solid m-0'>
-      <thead>
-        <tr>
-          <th colSpan='2'><div className='flex justify-between w-full items-center'><div className=''>파티모집</div><div className='text-xs '><button onClick={handlePartyM} className='border-none'>MORE</button></div></div></th>
-          
-        </tr>
-      </thead>
-      <tbody>
-        {section === null ? 'loading' : section}
-      </tbody>
-    </table>
-    {isDataTruncated}
-  </section>
-  <section>
-      <table className='m-0 p-0'>
+        <div className='basis-1/6 max-h-full h-full '>
+            <div className='   ml-2  flex flex-col justify-start'>
+            <section className='bg-white m-0  '>
+      <table className='m-0 p-0 table-fixed'>
         <thead>
           
             <tr>
@@ -343,12 +369,12 @@ const [newsData, setNewsData] = useState([]);
           {currentNewsData.map((item, index) => (
             <tr key={index} >
               <td className='m-0 p-0'>
-                <div className='m-0 pr-2'><img src={item.imgUrl} alt={item.title} referrerPolicy="no-referrer" /></div>
+                <div  className='m-0 pr-2 relative'><img  className='' src={item.imgUrl} alt={item.title} referrerPolicy="no-referrer" /></div>
               </td>
               <td className='m-0 p-0'>
                 
-                <div className='font-bold'><a href={item.hyperLink}>{item.title}</a></div>
-                <div>{item.summary.slice(0, 20)+"..."}</div>
+                <div className='font-bold'><a href={item.hyperLink}>{item.title.slice(0,15)+'...'}</a></div>
+                <div className='text-xs'>{item.summary.slice(0, 15)+"..."}</div>
               </td>
             </tr>
           ))}
@@ -356,6 +382,38 @@ const [newsData, setNewsData] = useState([]);
       </table>
       
     </section>
+ 
+  <section className='bg-white  p-0 m-0'>
+    <table className=' m-0 '>
+      <thead>
+        <tr className='border-b-0'>
+          <th colSpan='2' className='border-none'><div  className='flex justify-between w-full items-center  border-none'><div className='font-bold'>파티모집</div><div className='text-xs '><button onClick={handlePartyM} className='border-none'>MORE</button></div></div></th>
+          {showWritingBoard && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-8 rounded shadow-lg">
+            <button
+              className="absolute top-0 right-0 p-4 text-gray-700 hover:text-gray-900"
+              onClick={() => {
+                setSelectedPost(null);
+                
+                setShowWritingBoard(false);
+              }}
+            >
+              Close
+            </button>
+            <TempBoard setCurrent_state1={setCurrent_state1} current_state1={current_state1} selectedPost={selectedPost}  onClose={() => setShowWritingBoard(false)} />
+          </div>
+        </div>
+      )}
+        </tr>
+      </thead>
+      <tbody >
+        {section === null ? 'loading' : section}
+      </tbody>
+    </table>
+    {isDataTruncated}
+  </section>
+  
 </div></div>
           </div>
         

@@ -20,7 +20,13 @@ body {
 }
 #elementToFadeInAndOut:hover{
   -webkit-animation: fadeinout 4s ;/* linear forwards;*/
-    animation: fadeinout 1.5s ;/*linear forwards;*/
+    animation: fadeinout 0.5s ;/*linear forwards;*/
+    transform: scale(1.05);
+    z-index: 20;
+    border: 1px solid transparent;
+    border-radius: 2.5%;
+    overflow: hidden;
+    box-shadow: 10px 20px 30px ;
     /* opacity: 0; */
 }
 @-webkit-keyframes fadeinout {
@@ -29,7 +35,8 @@ body {
 
 @keyframes fadeinout {
   /* 50% { opacity: 0; } */
-  from{opacity: 0.5;}to{opacity: 1;}
+  /* from{opacity: 0.5;}to{opacity: 1;} */
+  from{transform: scale(1);}to{transform: scale(1.05);}
 }
 /*
  body {

@@ -21,6 +21,7 @@ const Comment = () => {
   const [selectedPost, setSelectedPost] = useState(null);
   const [showWritingBoard, setShowWritingBoard] = useState(false);
   const [seq,setseq]=useState(null)
+  const [currentPage1, setCurrentPage1] = useState(1);
   // const handleSetComment = (text) => {
   //   setComments(text)
   // } 
@@ -28,25 +29,43 @@ const Comment = () => {
   const handlePartyM=()=>{
     navigate('/TempBoard2')
   }
+  useEffect(()=>{
+    console.log(current_state1,'스텟')
+  },[showWritingBoard])
   const hancleshow=()=>{
-    console.log(postseq.current.value,'showitem')
-    console.log(displayedParty,"hancleshow");
+    // console.log(postseq.current.value,'showitem')
+    // console.log(displayedParty,"hancleshow");
     displayedParty.map((item)=>{
+      console.log(showWritingBoard,'쇼',item.seq,seq)
       
-        console.log(seq,'abc')
+        if(item.seq==seq){
+          console.log(item,'abc')
+          setSelectedPost(item)
+          
+    setShowWritingBoard(true);
+    setCurrent_state1(2)
+        }
+        // console.log(item,'item1')
+          
        
     })
     
   }
+  const hancleseq=(se)=>{
+    console.log(se,'se')
+    setseq(se)
+  }
   useEffect(()=>{
-    console.log(seq,'fff')
+    console.log(seq,'123')
+    if(displayedParty!=null)
+      hancleshow()
   },[seq])
   const handleinfo=()=>{
     sethide1(!hide1)
   }
   const [isNameClicked, setIsNameClicked] = useState(0);
   const temp = comments.map((comment) => {
-    console.log(comment.seq);
+    // console.log(comment.seq);
 
     return <><Comment_component seq={comment.seq} name={comment.memId} text={comment.content}   isNameClicked={isNameClicked} setIsNameClicked={setIsNameClicked}/><hr className='mb-2'></hr></>;
   });
@@ -186,7 +205,7 @@ const Comment = () => {
             return (
               <tr >
                 
-                <td  value={item.seq} ref={postseq} onClick={()=>{hancleshow();setseq(item.seq)}} className='border-none'>{item.title.length > 20 ? item.title.slice(0, 20) + '...' : item.title}</td>
+                <td  value={item.seq} ref={postseq} onClick={()=>{hancleshow();hancleseq(item.seq)}} className='border-none'>{item.title.length > 20 ? item.title.slice(0, 20) + '...' : item.title}</td>
                 <td className='text-right border-none'>{item.memId.length > 20 ? item.memId.slice(0, 20) + '...' : item.memId}</td>
               </tr>
             );
@@ -271,8 +290,10 @@ const [newsData, setNewsData] = useState([]);
 
 
   const handleAddComment = 
-  
-     async () => {console.log(newComment.text,"add_on_comment")
+    // if(newComment=='')
+    
+    // return;
+     async () => {console.log(newComment.text,"add_on_comment",newComment.text.length)
       // 예시: 서버로 로그인 정보를 보내고 응답을 처리
       try {
         
@@ -321,29 +342,29 @@ const [newsData, setNewsData] = useState([]);
       <div className='pt-16 flex justify-center max-w-full w-full h-screen' style={{paddingTop:'76.25px'}}> {/* Add padding at the top */}
         <div className='flex justify-center max-w-full items-center w-full h-full mt-2'>
          
-            <div className='  bg-white max-h-full h-full pt-0 ' style={{flexBasis:'50%'}}>
+            <div className='  bg-white max-h-full h-full pt-0 border-solid border-white rounded-lg border-2 overflow-hidden'  style={{flexBasis:'50%'}}>
             {largePicture}
             
             <div className=' col-span-2 h-full max-h-full row-span-6 m-0 p-0'>
-              <div className='' style={{height:'45%'}}>
-                <CommentList comments={comments} itemsPerPage={6}></CommentList>
+              <div className='mt-1' style={{height:'45%'}}>
+                <CommentList setCurrentPage={setCurrentPage1} currentPage={currentPage1} comments={comments} itemsPerPage={6}></CommentList>
             {/* {temp}</div> */}</div>
             <div >
             <textarea
               name='text'
-              placeholder='Add a comment...'
+              placeholder='내용 입력하세요'
               value={newComment.text}
               onChange={handleInputChange}
               className='mb-2 p-2 '
             />
             
-            <button onClick={handleAddComment} className='bg-blue-500 text-white p-2   '>
-              Add Comment
+            <button onClick={() => { handleAddComment(); setCurrentPage1(-1); }} className='bg-blue-500 text-white p-2'>
+              글 등록하기
             </button></div>
             </div>
             </div>
-        <div className='basis-1/6 max-h-full h-full '>
-            <div className='   ml-2  flex flex-col justify-start'>
+        <div className='basis-1/6 max-h-full h-full'>
+            <div className='   ml-2  flex flex-col justify-start border-solid border-white rounded-lg border-2 overflow-hidden'>
             <section className='bg-white m-0  '>
       <table className='m-0 p-0 table-fixed'>
         <thead>
@@ -351,7 +372,7 @@ const [newsData, setNewsData] = useState([]);
             <tr>
             
             <th colSpan='2'>
-              <div className='flex w-full justify-between items-center'>
+              <div className='flex w-full  justify-between items-center'>
               뉴스
               <div className='flex flex-'>
         <button onClick={() => setCurrentPage(prevPage => Math.max(prevPage - 1, 1))}>
@@ -387,10 +408,11 @@ const [newsData, setNewsData] = useState([]);
     <table className=' m-0 '>
       <thead>
         <tr className='border-b-0'>
-          <th colSpan='2' className='border-none'><div  className='flex justify-between w-full items-center  border-none'><div className='font-bold'>파티모집</div><div className='text-xs '><button onClick={handlePartyM} className='border-none'>MORE</button></div></div></th>
+          <th colSpan='2' className='border-none'><div  className='flex justify-between w-full items-center  
+          border-none'><div className='font-bold'>파티모집</div><div className='text-xs '><button onClick={handlePartyM} className='border-none'>MORE</button></div></div></th>
           {showWritingBoard && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-8 rounded shadow-lg">
+          <div className="bg-white p-8 rounded shadow-lg w-1/2">
             <button
               className="absolute top-0 right-0 p-4 text-gray-700 hover:text-gray-900"
               onClick={() => {
@@ -401,7 +423,7 @@ const [newsData, setNewsData] = useState([]);
             >
               Close
             </button>
-            <TempBoard setCurrent_state1={setCurrent_state1} current_state1={current_state1} selectedPost={selectedPost}  onClose={() => setShowWritingBoard(false)} />
+            <TempBoard setCurrent_state1={setCurrent_state1} current_state1={current_state1} selectedPost={selectedPost}  onClose={() => {setShowWritingBoard(false);setseq(null)}} />
           </div>
         </div>
       )}

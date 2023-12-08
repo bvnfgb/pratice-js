@@ -117,7 +117,7 @@ useEffect(()=>{
   }, [text]);
   
   return (
-    <div key={seq} className='flex flex-row justify-between text-left align-top   border-spacing-16 mb-2'>
+    <div key={seq} className='flex flex-row justify-between text-left align-top px-8  border-spacing-16 mb-2'>
       {isUpdate ? (
         <div className="flex justify-between w-full">
           <input
@@ -138,7 +138,7 @@ useEffect(()=>{
         <div className='w-full flex justify-between'>
           <span className='text-black text-base'>{thetext}</span>
           <div key={seq * -1} className='flex' >{/*onClick={(e) => handleUsernameClick(seq,e)}*/}
-          <div className='mr-2' key={`name-${seq}`} id={`name-${seq}`} >
+          <div className='mr-5' key={`name-${seq}`} id={`name-${seq}`} >
         {name}
       </div>
       {selectedUser && (

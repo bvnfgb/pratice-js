@@ -160,7 +160,7 @@ const TempBoard = ({ onClose, selectedPost, current_state1, setCurrent_state1 })
               className="w-full border p-2"
             />
           ) : current_state1 === 2 ? (
-            <div className="w-full border p-2">{imageUrl}</div>
+            <div className="w-full border p-2 ">{imageUrl}</div>
           ) : (
             /* Handle state 3 specific content or display nothing for other states */
             <input
@@ -248,16 +248,16 @@ const TempBoard = ({ onClose, selectedPost, current_state1, setCurrent_state1 })
               selected={selectedCategory}
             >
               {[
-                'lol',
-                'fifa',
-                'valo',
-                'lostark',
-                'sudden',
-                'over',
-                'maple',
-                'battle',
-                'starc',
-                'dungeon',
+                '롤',
+                'FC온라인',
+                '발로란트',
+                '로아',
+                '서든어택',
+                '오버워치',
+                '메이플',
+                '배그',
+                '스타',
+                '던파',
               ].map((cat, idx) => (
                 <option key={idx} value={cat}>
                   {cat}

@@ -100,7 +100,7 @@ useEffect(()=>{
       {/* Overlay with Writing Board */}
       {showWritingBoard && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-8 rounded shadow-lg">
+          <div className="bg-white p-8 rounded shadow-lg w-1/2" >
             <button
               className="absolute top-0 right-0 p-4 text-gray-700 hover:text-gray-900"
               onClick={() => {

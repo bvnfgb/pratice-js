@@ -11,6 +11,7 @@ import Mypage from './16/Mypage';
 import MapKakao from './16/MapKakao';
 import TempBoard from './16/TempBoard';
 import TempBoard2 from './16/TempBoard2';
+import MiniProject from'./16/MiniProject';
 // import Clock from './01/Clock';
 // import Lotto from './02/Lotto';
 // import MyCom from './03/MyCom';
@@ -58,6 +59,7 @@ function App() {
         <Route path='MapKakao' element={<MapKakao></MapKakao>}></Route>
         <Route path='TempBoard' element={<TempBoard></TempBoard>}></Route>
         <Route path='TempBoard2' element={<TempBoard2></TempBoard2>}></Route>
+        <Route path='/' element={<MiniProject></MiniProject>}></Route>
     </Routes>
     </BrowserRouter>
     

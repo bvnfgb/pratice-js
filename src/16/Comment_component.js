@@ -59,7 +59,7 @@ useEffect(()=>{
          window.location.reload()
           setIsUpdate(false);
          //  setthetext(commentInputRef.current.value);
-        } else if(response.status==400){
+        } else if(response.status==400||403){
           alert('외부인')
         }
         else {
@@ -91,7 +91,7 @@ useEffect(()=>{
         setthetext(commentInputRef.current.value);
         console.log('내부인')
 
-      } else if(response.status==400){
+      } else if(response.status==400||403){
         console.log('외부인')
         setIsUpdate(false);
           alert('외부인')

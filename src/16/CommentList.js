@@ -17,7 +17,12 @@ const CommentList = ({ comments, itemsPerPage, setCurrentPage, currentPage }) =>
   ));
 
   useEffect(() => {
-    if (currentPage === -1) {
+    // if( localStorage.getItem('token')==null){
+    //   setCurrentPage(Math.ceil((comments.length) / itemsPerPage));
+    //   setClickedIndex(Math.ceil((comments.length) / itemsPerPage) - 1);
+    //   return
+    // }
+    if (currentPage === -1 ) {
       setCurrentPage(Math.ceil((comments.length + 1) / itemsPerPage));
       setClickedIndex(Math.ceil((comments.length + 1) / itemsPerPage) - 1);
       setIsBold((prevIsBold) => !prevIsBold);

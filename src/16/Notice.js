@@ -94,7 +94,7 @@ const Notice = () => {
   return (
     <>
        <TopBar/>
-      <div  className="grid grid-cols-5 gap-0 h-screen bg-black" style={{paddingTop:'3.75rem'}}>
+      <div  className="grid grid-cols-5 gap-0 h-screen w-3/4 mx-auto bg-black" style={{paddingTop:'3.75rem', boxShadow: '0px 0px 20px black'}}>
       
       {Object.keys(arr1).length > 0 ? (
        

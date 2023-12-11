@@ -6,12 +6,12 @@ const { kakao } = window;
 const MapKakao = () => {
     const uri=process.env.REACT_APP_URI
     const loca = useLocation();
-    const [localaddr, setLocaladdr] = useState('');
+    const [localaddr, setLocaladdr] = useState('부산광역시 부산대학로63번길 2');
     const [address, setAddress] = useState([]);
     const [addrlist, setAddrlist] = useState(null);
     const hancleClickAddr = (addr) => {
         if(addr=='--선택 해주세요--')
-            setLocaladdr("");
+            setLocaladdr("부산광역시 부산대학로63번길 2");
         else
             setLocaladdr(addr);
         console.log(localaddr, "localaddr");

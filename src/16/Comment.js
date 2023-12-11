@@ -314,7 +314,7 @@ const [newsData, setNewsData] = useState([]);
         console.log('응답 상태:', response.status);
         console.log(newComment.text)
         if (response.ok) {
-          
+          setCurrentPage1(-1);
           // 로그인 성공 시 사용자 정보 업데이트
           // setUser(data.user);
           // window.location.reload()
@@ -358,7 +358,7 @@ const [newsData, setNewsData] = useState([]);
               className='mb-2 p-2 '
             />
             
-            <button onClick={() => { handleAddComment(); setCurrentPage1(-1); }} className='bg-blue-500 text-white p-2'>
+            <button onClick={() => { handleAddComment();  }} className='bg-blue-500 text-white p-2'>
               글 등록하기
             </button></div>
             </div>
